@@ -32,8 +32,8 @@ public class DocumentController {
     @PatchMapping("/updateDocument")
     public ResponseEntity<BaseResponse<?>> updateDocument(@Valid @RequestBody Document document, HttpServletRequest request) throws Exception {
         BaseResponse<UserDetails> baseResponse = new BaseResponse<>();
-        BaseResponse<Document> d=documentServiceInterface.saveDocument(document);
-        ResponseEntity responseEntity=new ResponseEntity<>(d,null,HttpStatus.ACCEPTED);
+        BaseResponse<Document> upadteDocument=documentServiceInterface.upadteDocument(document);
+        ResponseEntity responseEntity=new ResponseEntity<>(upadteDocument,null,HttpStatus.ACCEPTED);
         return  responseEntity;
 
     }
@@ -41,8 +41,8 @@ public class DocumentController {
     @GetMapping("/getDocument/{id}")
     public ResponseEntity<BaseResponse<?>> getDocumentById(@PathVariable Integer id, HttpServletRequest request) throws Exception {
 
-        BaseResponse<Document> d=documentServiceInterface.getDocument(id);
-        ResponseEntity responseEntity=new ResponseEntity<>(d,null,HttpStatus.ACCEPTED);
+        BaseResponse<Document> document=documentServiceInterface.getDocument(id);
+        ResponseEntity responseEntity=new ResponseEntity<>(document,null,HttpStatus.ACCEPTED);
         return  responseEntity;
 
     }

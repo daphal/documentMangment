@@ -1,5 +1,6 @@
 package com.abcBank.documentMangment.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
@@ -28,7 +29,8 @@ public class DocumentLog {
     private LocalDateTime documentModifedTime= LocalDateTime.now();;
 
     @ManyToOne
+    @JsonBackReference
     @JoinColumn(name="document_Id", nullable=false)
-    private Document document;
+    private Document documents;
 
 }

@@ -2,17 +2,23 @@ package com.abcBank.documentMangment.service;
 
 import com.abcBank.documentMangment.model.BaseResponse;
 import com.abcBank.documentMangment.model.CommonResponseData;
+import com.abcBank.documentMangment.model.Document;
 import com.abcBank.documentMangment.model.UserDetails;
+import com.abcBank.documentMangment.repository.DocumentRepositoryInterface;
 import com.abcBank.documentMangment.repository.UserRepositoryInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+
 @Service
 public class UserServiceImplement implements UserServiceInterface{
     @Autowired
     UserRepositoryInterface userRepositoryInterface;
-
+    @Autowired
+    DocumentRepositoryInterface documentRepositoryInterface;
     @Override
     public BaseResponse<UserDetails> saveUser(UserDetails userDetails) throws Exception {
         BaseResponse<UserDetails> response = new BaseResponse<>();
@@ -45,10 +51,11 @@ public class UserServiceImplement implements UserServiceInterface{
     @Override
     public BaseResponse<UserDetails> getUser(Integer id) throws Exception {
         BaseResponse<UserDetails> response = new BaseResponse<>();
-        UserDetails userDetails;
-        userDetails =userRepositoryInterface.getById(id);
+        Optional<UserDetails> userDetails;
+        userDetails =userRepositoryInterface.findById(id);
+        UserDetails processUserDetails=userDetails.get();
         if(userDetails !=null){
-            response.setResponseObject(userDetails);
+            response.setResponseObject(processUserDetails);
             response.setReasonCode(CommonResponseData.SUCCESS);
         }
         else{

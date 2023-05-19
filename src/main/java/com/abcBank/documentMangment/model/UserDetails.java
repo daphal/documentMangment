@@ -1,11 +1,14 @@
 package com.abcBank.documentMangment.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.sun.istack.NotNull;
 import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.Pattern;
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -27,7 +30,7 @@ public class UserDetails {
     @Column(name = "userName")
     private String userName;
 
-   /* @JsonIgnoreProperties
-    @OneToMany(mappedBy="userDetails")
-    private Set<Document> documents;*/
+    @JsonManagedReference
+    @OneToMany(cascade = CascadeType.ALL,mappedBy = "userDetails",fetch = FetchType.EAGER)
+    private List<Document> documents;
 }

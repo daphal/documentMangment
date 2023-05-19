@@ -8,7 +8,7 @@ import com.abcBank.documentMangment.model.UserDetails;
 public interface DocumentServiceInterface {
 
     BaseResponse<Document> saveDocument(Document document) throws Exception;
-   // BaseResponse<Document> upadteDocument(Document document) throws Exception;
+    BaseResponse<Document> upadteDocument(Document document) throws Exception;
 
     BaseResponse<Document> getDocument(Integer id) throws Exception;
 

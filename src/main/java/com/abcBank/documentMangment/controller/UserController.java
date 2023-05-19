@@ -2,6 +2,7 @@ package com.abcBank.documentMangment.controller;
 
 import com.abcBank.documentMangment.model.BaseResponse;
 import com.abcBank.documentMangment.model.CommonResponseData;
+import com.abcBank.documentMangment.model.Document;
 import com.abcBank.documentMangment.model.UserDetails;
 import com.abcBank.documentMangment.service.UserServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,7 +44,14 @@ public class UserController {
             return new ResponseEntity<BaseResponse<?>>(baseResponse, null, HttpStatus.ACCEPTED);
         }
     }
+    @GetMapping("/getUserById/{id}")
+    public ResponseEntity<BaseResponse<?>> getUserById(@PathVariable Integer id, HttpServletRequest request) throws Exception {
 
+        BaseResponse<UserDetails> d=userServiceInterface.getUser(id);
+        ResponseEntity responseEntity=new ResponseEntity<>(d,null,HttpStatus.ACCEPTED);
+        return  responseEntity;
+
+    }
 
 
 }
