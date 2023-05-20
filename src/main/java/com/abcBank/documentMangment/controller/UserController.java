@@ -47,8 +47,8 @@ public class UserController {
     @GetMapping("/getUserById/{id}")
     public ResponseEntity<BaseResponse<?>> getUserById(@PathVariable Integer id, HttpServletRequest request) throws Exception {
 
-        BaseResponse<UserDetails> d=userServiceInterface.getUser(id);
-        ResponseEntity responseEntity=new ResponseEntity<>(d,null,HttpStatus.ACCEPTED);
+        BaseResponse<UserDetails> user=userServiceInterface.getUser(id);
+        ResponseEntity responseEntity=new ResponseEntity<>(user,null,HttpStatus.ACCEPTED);
         return  responseEntity;
 
     }

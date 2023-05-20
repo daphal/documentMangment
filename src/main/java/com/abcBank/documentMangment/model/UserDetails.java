@@ -22,7 +22,7 @@ public class UserDetails {
 
     @Id
     @GeneratedValue()
-    @Column(name = "Id")
+    @Column(name = "user_Id")
     private Integer user_Id;
 
     @NotNull

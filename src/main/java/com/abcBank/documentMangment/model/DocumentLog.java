@@ -24,7 +24,6 @@ public class DocumentLog {
     @Column(name = "Id")
     private Integer documentLog_Id;
 
-    @NotNull
     @Column(name = "documentModifedTime")
     private LocalDateTime documentModifedTime= LocalDateTime.now();;
 

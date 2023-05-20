@@ -20,13 +20,12 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonIgnoreProperties
-@SQLDelete(sql = "UPDATE Document SET deleted = true WHERE id=?")
-@Where(clause = "deleted=false")
+@Where(clause = "deleted = false")
 public class Document implements Serializable {
 
     @Id
     @GeneratedValue()
-    @Column(name = "Id")
+    @Column(name = "document_Id")
     private Integer document_Id;
 
     @NotNull
@@ -43,14 +42,15 @@ public class Document implements Serializable {
 
     @JsonBackReference
     @ManyToOne()
+    @JoinColumn(name="user_Id", nullable=false)
     private UserDetails userDetails;
 
 
     @Column(name = "deleted")
-    private boolean deleted = Boolean.FALSE;
+    private Boolean deleted = false;
 
     @JsonManagedReference
-    @OneToMany(cascade = CascadeType.ALL,mappedBy = "documents",fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "documents",fetch = FetchType.EAGER)
     private List<DocumentLog> documentLogs;
 }
 

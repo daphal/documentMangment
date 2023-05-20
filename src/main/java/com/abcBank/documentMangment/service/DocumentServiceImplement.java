@@ -37,6 +37,7 @@ public class DocumentServiceImplement implements DocumentServiceInterface{
                     if(documentLog.getDocumentLog_Id()>0){
                         response.setResponseObject(document);
                         response.setReasonCode(CommonResponseData.SUCCESS);
+                        response.setReasonText("Saved");
                     }
                     else {
                         response.setReasonText("Document is updated but log is not update");
@@ -57,12 +58,14 @@ public class DocumentServiceImplement implements DocumentServiceInterface{
         }
         catch (FileTypeException exception){
             response.setStatus(CommonResponseData.FAIL);
+            response.setReasonText(exception.getMessage());
             response.setResponseObject(null);
             return  response;
 
         }
         catch (Exception exception){
             response.setStatus(CommonResponseData.FAIL);
+            response.setReasonText(exception.getMessage());
             response.setResponseObject(null);
             return  response;
 
@@ -91,6 +94,7 @@ public class DocumentServiceImplement implements DocumentServiceInterface{
                         documentLog=documentLogRepositoryInterface.save(documentLog);
                         if(documentLog.getDocumentLog_Id()>0){
                             response.setResponseObject(document);
+                            response.setReasonText("Updated");
                             response.setReasonCode(CommonResponseData.SUCCESS);
                         }
                         else {
@@ -112,18 +116,21 @@ public class DocumentServiceImplement implements DocumentServiceInterface{
         }
         catch (FileTypeException exception){
             response.setStatus(CommonResponseData.FAIL);
+            response.setReasonText(exception.getMessage());
             response.setResponseObject(null);
             return  response;
 
         }
         catch (FileOwnarException exception){
             response.setStatus(CommonResponseData.FAIL);
+            response.setReasonText(exception.getMessage());
             response.setResponseObject(null);
             return  response;
 
         }
         catch (Exception exception){
             response.setStatus(CommonResponseData.FAIL);
+            response.setReasonText(exception.getMessage());
             response.setResponseObject(null);
             return  response;
 
@@ -142,6 +149,7 @@ public class DocumentServiceImplement implements DocumentServiceInterface{
             response.setReasonCode(CommonResponseData.SUCCESS);
         }
         else{
+            response.setReasonText("Internal error occur");
             response.setStatus(CommonResponseData.FAIL);
         }
         return response;
@@ -164,11 +172,13 @@ public class DocumentServiceImplement implements DocumentServiceInterface{
     public BaseResponse<Document> deleteDocument(Integer id) throws Exception {
         BaseResponse<Document> response = new BaseResponse<>();
         try {
-            documentRepositoryInterface.deleteById(id);
-            Optional<Document> document= documentRepositoryInterface.findById(id);
-            if(document.isPresent()){
+            Document document= documentRepositoryInterface.getById(id);
+            document.setDocumentLogs(null);
+            if(document!=null){
+                document.setDeleted(true);
+                document=documentRepositoryInterface.save(document);
                 DocumentLog documentLog=new DocumentLog();
-                documentLog.setDocuments(document.get());
+                documentLog.setDocuments(document);
                 documentLog=documentLogRepositoryInterface.save(documentLog);
                 if(documentLog.getDocumentLog_Id()>0){
                     response.setResponseObject(null);
@@ -177,9 +187,13 @@ public class DocumentServiceImplement implements DocumentServiceInterface{
                     response.setReasonText("Document is deleted");
                 }
                 else {
-                    response.setReasonText("Document is not present ");
+                    response.setReasonText("Document is log is updated ");
                     response.setStatus(CommonResponseData.FAIL);
                 }
+            }
+            else{
+                response.setReasonText("Document is not found ");
+                response.setStatus(CommonResponseData.FAIL);
             }
             return response;
         }
@@ -199,10 +213,12 @@ public class DocumentServiceImplement implements DocumentServiceInterface{
         userDetails =userRepositoryInterface.findById(id);
         UserDetails processUserDetails=userDetails.get();
         if(userDetails !=null){
+            response.setReasonText("Suceess");
             response.setResponseObject(processUserDetails);
             response.setReasonCode(CommonResponseData.SUCCESS);
         }
         else{
+            response.setReasonText("Not found");
             response.setStatus(CommonResponseData.FAIL);
         }
         return response;

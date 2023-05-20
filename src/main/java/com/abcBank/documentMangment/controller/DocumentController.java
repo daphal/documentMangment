@@ -23,8 +23,8 @@ public class DocumentController {
     @PostMapping("/saveDocument")
     public ResponseEntity<BaseResponse<?>> saveDocument(@Valid @RequestBody Document document, HttpServletRequest request) throws Exception {
         BaseResponse<UserDetails> baseResponse = new BaseResponse<>();
-        BaseResponse<Document> d=documentServiceInterface.saveDocument(document);
-        ResponseEntity responseEntity=new ResponseEntity<>(d,null,HttpStatus.ACCEPTED);
+        BaseResponse<Document> prosessdocument=documentServiceInterface.saveDocument(document);
+        ResponseEntity responseEntity=new ResponseEntity<>(prosessdocument,null,HttpStatus.ACCEPTED);
         return  responseEntity;
 
     }
@@ -49,8 +49,8 @@ public class DocumentController {
     @DeleteMapping("/deleteDocument/{id}")
     public ResponseEntity<BaseResponse<?>> deleteDocument(@PathVariable Integer id, HttpServletRequest request) throws Exception {
 
-        BaseResponse<Document> d=documentServiceInterface.deleteDocument(id);
-        ResponseEntity responseEntity=new ResponseEntity<>(d,null,HttpStatus.ACCEPTED);
+        BaseResponse<Document> document=documentServiceInterface.deleteDocument(id);
+        ResponseEntity responseEntity=new ResponseEntity<>(document,null,HttpStatus.ACCEPTED);
         return  responseEntity;
 
     }
