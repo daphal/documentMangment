@@ -41,7 +41,7 @@ class UserServiceImplementTest {
     @Autowired
     private UserServiceImplement userServiceImplement;
 
-   
+
     @Test
     void testSaveUser() throws Exception {
         UserDetails userDetails = new UserDetails();
@@ -88,7 +88,7 @@ class UserServiceImplementTest {
         verify(userDetails).setUser_Id((Integer) any());
     }
 
-   
+
     @Test
     void testUpadteUser() throws Exception {
         UserDetails userDetails = new UserDetails();
@@ -109,7 +109,6 @@ class UserServiceImplementTest {
     }
 
 
-  
     @Test
     void testUpadteUser2() throws Exception {
         UserDetails userDetails = mock(UserDetails.class);
@@ -137,7 +136,7 @@ class UserServiceImplementTest {
         verify(userDetails).setUser_Id((Integer) any());
     }
 
-   
+
     @Test
     void testGetUser() throws Exception {
         UserDetails userDetails = new UserDetails();
@@ -157,7 +156,7 @@ class UserServiceImplementTest {
         verify(userRepositoryInterface).findById((Integer) any());
     }
 
-   
+
     @Test
     void testGetUser2() throws Exception {
         UserDetails userDetails = new UserDetails();
@@ -194,7 +193,7 @@ class UserServiceImplementTest {
         verify(userRepositoryInterface).findById((Integer) any());
     }
 
-   
+
     @Test
     void testGetUser3() throws Exception {
         UserDetails userDetails = new UserDetails();
@@ -246,7 +245,7 @@ class UserServiceImplementTest {
         verify(userRepositoryInterface).findById((Integer) any());
     }
 
-   
+
     @Test
     void testGetUser6() throws Exception {
         UserDetails userDetails = new UserDetails();
@@ -299,7 +298,7 @@ class UserServiceImplementTest {
         verify(document).setUserDetails((UserDetails) any());
     }
 
-   
+
     @Test
     void testGetAllUser() throws Exception {
         when(userRepositoryInterface.findAll()).thenReturn(new ArrayList<>());
@@ -328,7 +327,7 @@ class UserServiceImplementTest {
         verify(userRepositoryInterface).findAll();
     }
 
-  
+
     @Test
     void testDeleteUser() throws Exception {
         doNothing().when(userRepositoryInterface).deleteById((Integer) any());

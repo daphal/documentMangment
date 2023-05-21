@@ -6,6 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface DocumentRepositoryInterface  extends JpaRepository<Document, Integer> {
+public interface DocumentRepositoryInterface extends JpaRepository<Document, Integer> {
     List<Document> findByUserDetails(UserDetails userDetails);
 }

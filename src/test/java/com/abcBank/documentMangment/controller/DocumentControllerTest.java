@@ -34,7 +34,7 @@ class DocumentControllerTest {
     @MockBean
     private DocumentServiceInterface documentServiceInterface;
 
-  
+
     @Test
     void testSaveDocument() throws Exception {
         UserDetails userDetails = new UserDetails();

@@ -32,7 +32,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-
 @ContextConfiguration(classes = {DocumentServiceImplement.class})
 @ExtendWith(SpringExtension.class)
 class DocumentServiceImplementTest {
@@ -48,7 +47,7 @@ class DocumentServiceImplementTest {
     @MockBean
     private UserRepositoryInterface userRepositoryInterface;
 
-   
+
     @Test
     void testSaveDocument() throws Exception {
         UserDetails userDetails = new UserDetails();
@@ -108,7 +107,7 @@ class DocumentServiceImplementTest {
         verify(document).setUserDetails((UserDetails) any());
     }
 
- 
+
     @Test
     void testSaveDocument3() throws Exception {
         UserDetails userDetails = new UserDetails();
@@ -268,7 +267,7 @@ class DocumentServiceImplementTest {
         verify(document2).setUserDetails((UserDetails) any());
     }
 
-  
+
     @Test
     void testSaveDocument5() throws Exception {
         UserDetails userDetails = new UserDetails();
@@ -351,7 +350,7 @@ class DocumentServiceImplementTest {
         verify(document2).setUserDetails((UserDetails) any());
     }
 
- 
+
     @Test
     void testSaveDocument6() throws Exception {
         UserDetails userDetails = new UserDetails();
@@ -447,7 +446,7 @@ class DocumentServiceImplementTest {
         verify(document2).setUserDetails((UserDetails) any());
     }
 
-  
+
     @Test
     void testUpadteDocument() throws Exception {
         UserDetails userDetails = new UserDetails();
@@ -470,7 +469,7 @@ class DocumentServiceImplementTest {
         assertEquals("File type should me pdf", actualUpadteDocumentResult.getReasonText());
     }
 
-  
+
     @Test
     void testUpadteDocument2() throws Exception {
         UserDetails userDetails = new UserDetails();
@@ -508,7 +507,7 @@ class DocumentServiceImplementTest {
         verify(document).setUserDetails((UserDetails) any());
     }
 
-   
+
     @Test
     void testUpadteDocument3() throws Exception {
         UserDetails userDetails = new UserDetails();
@@ -846,7 +845,7 @@ class DocumentServiceImplementTest {
         verify(document3, atLeast(1)).setUserDetails((UserDetails) any());
     }
 
-  
+
     @Test
     void testGetDocument() throws Exception {
         UserDetails userDetails = new UserDetails();
@@ -871,7 +870,7 @@ class DocumentServiceImplementTest {
         verify(documentRepositoryInterface).findById((Integer) any());
     }
 
-   
+
     @Test
     void testGetDocument4() throws Exception {
         UserDetails userDetails = new UserDetails();
@@ -913,7 +912,7 @@ class DocumentServiceImplementTest {
         verify(document).setUserDetails((UserDetails) any());
     }
 
-   
+
     @Test
     void testDeleteDocument() throws Exception {
         UserDetails userDetails = new UserDetails();
@@ -975,7 +974,7 @@ class DocumentServiceImplementTest {
         verify(documentRepositoryInterface).save((Document) any());
     }
 
-   
+
     @Test
     void testDeleteDocument2() throws Exception {
         UserDetails userDetails = new UserDetails();
@@ -1111,7 +1110,7 @@ class DocumentServiceImplementTest {
         verify(documentRepositoryInterface).save((Document) any());
     }
 
-   
+
     @Test
     void testDeleteDocument4() throws Exception {
         UserDetails userDetails = new UserDetails();
@@ -1180,7 +1179,7 @@ class DocumentServiceImplementTest {
         verify(documentRepositoryInterface).save((Document) any());
     }
 
-  
+
     @Test
     void testGetDocumentByUser() throws Exception {
         UserDetails userDetails = new UserDetails();

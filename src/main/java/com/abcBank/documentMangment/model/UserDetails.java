@@ -31,6 +31,6 @@ public class UserDetails {
     private String userName;
 
     @JsonManagedReference
-    @OneToMany(cascade = CascadeType.ALL,mappedBy = "userDetails",fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userDetails", fetch = FetchType.EAGER)
     private List<Document> documents;
 }

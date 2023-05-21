@@ -14,7 +14,7 @@ import java.util.Locale;
 import java.util.Optional;
 
 @Service
-public class DocumentServiceImplement implements DocumentServiceInterface{
+public class DocumentServiceImplement implements DocumentServiceInterface {
     @Autowired
     DocumentRepositoryInterface documentRepositoryInterface;
     @Autowired
@@ -27,140 +27,129 @@ public class DocumentServiceImplement implements DocumentServiceInterface{
     public BaseResponse<Document> saveDocument(Document document) throws Exception {
         BaseResponse<Document> response = new BaseResponse<>();
         try {
-            if(document.getDocumentType().toLowerCase(Locale.ROOT).equals("pdf")){
+            if (document.getDocumentType().toLowerCase(Locale.ROOT).equals("pdf")) {
                 document.setDocumentData(GetEncodeBase64(document.getDocumentData().getBytes()));
-                document=documentRepositoryInterface.save(document);
-                if(document.getDocument_Id()>0){
-                    DocumentLog documentLog=new DocumentLog();
+                document = documentRepositoryInterface.save(document);
+                if (document.getDocument_Id() > 0) {
+                    DocumentLog documentLog = new DocumentLog();
                     documentLog.setDocuments(document);
-                    documentLog=documentLogRepositoryInterface.save(documentLog);
-                    if(documentLog.getDocumentLog_Id()>0){
+                    documentLog = documentLogRepositoryInterface.save(documentLog);
+                    if (documentLog.getDocumentLog_Id() > 0) {
                         response.setResponseObject(document);
                         response.setStatus(CommonResponseData.SUCCESS);
                         response.setReasonCode(CommonResponseData.SUCCESS);
                         response.setReasonText("Saved");
-                    }
-                    else {
+                    } else {
                         response.setReasonText("Document is updated but log is not update");
                         response.setStatus(CommonResponseData.FAIL);
                         response.setReasonCode(CommonResponseData.FAIL);
 
                     }
-                }
-                else{
+                } else {
                     response.setReasonText("Document is not save");
                     response.setStatus(CommonResponseData.FAIL);
                     response.setReasonCode(CommonResponseData.FAIL);
                 }
                 return response;
-            }
-            else {
+            } else {
                 throw new FileTypeException("File type should me pdf");
             }
 
 
-        }
-        catch (FileTypeException exception){
+        } catch (FileTypeException exception) {
             response.setStatus(CommonResponseData.FAIL);
             response.setReasonText(exception.getMessage());
             response.setReasonCode(CommonResponseData.FAIL);
             response.setResponseObject(null);
-            return  response;
+            return response;
 
-        }
-        catch (Exception exception){
+        } catch (Exception exception) {
             response.setStatus(CommonResponseData.FAIL);
             response.setReasonCode(CommonResponseData.FAIL);
             response.setReasonText(exception.getMessage());
             response.setResponseObject(null);
-            return  response;
+            return response;
 
         }
 
     }
 
     private String GetEncodeBase64(byte[] bytes) {
-        return  Base64.getUrlEncoder().encodeToString(bytes);
+        return Base64.getUrlEncoder().encodeToString(bytes);
     }
 
     @Override
     public BaseResponse<Document> upadteDocument(Document document) throws Exception {
         BaseResponse<Document> response = new BaseResponse<>();
         try {
-            if(document.getDocumentType().toLowerCase(Locale.ROOT).equals("pdf")){
-                if(document.getDocument_Id()>0 &&
+            if (document.getDocumentType().toLowerCase(Locale.ROOT).equals("pdf")) {
+                if (document.getDocument_Id() > 0 &&
                         documentRepositoryInterface.getById(document.getDocument_Id()).getUserDetails().getUser_Id()
-                                .equals(document.getUserDetails().getUser_Id())){
+                                .equals(document.getUserDetails().getUser_Id())) {
                     document.setDocumentData(GetEncodeBase64(document.getDocumentData().getBytes()));
                     document.setUserDetails(userRepositoryInterface.getById(document.getUserDetails().getUser_Id()));
-                   Document document1=documentRepositoryInterface.save(document);
-                    if(document.getDocument_Id()>0){
-                        DocumentLog documentLog=new DocumentLog();
+                    Document document1 = documentRepositoryInterface.save(document);
+                    if (document.getDocument_Id() > 0) {
+                        DocumentLog documentLog = new DocumentLog();
                         documentLog.setDocuments(document);
-                        documentLog=documentLogRepositoryInterface.save(documentLog);
-                        if(documentLog.getDocumentLog_Id()>0){
+                        documentLog = documentLogRepositoryInterface.save(documentLog);
+                        if (documentLog.getDocumentLog_Id() > 0) {
                             response.setResponseObject(document);
                             response.setReasonText("Updated");
                             response.setStatus(CommonResponseData.SUCCESS);
                             response.setReasonCode(CommonResponseData.SUCCESS);
-                        }
-                        else {
+                        } else {
                             response.setReasonText("Document is updated but log is not update");
                             response.setStatus(CommonResponseData.FAIL);
                             response.setReasonCode(CommonResponseData.FAIL);
                         }
                     }
                     return response;
-                }
-                else {
+                } else {
                     throw new FileOwnarException("Your are not own this file and you cant edit this file");
                 }
-            }
-            else{
+            } else {
                 throw new FileTypeException("File type should me pdf");
             }
 
 
-        }
-        catch (FileTypeException exception){
+        } catch (FileTypeException exception) {
             response.setStatus(CommonResponseData.FAIL);
             response.setReasonText(exception.getMessage());
             response.setReasonCode(CommonResponseData.FAIL);
             response.setResponseObject(null);
-            return  response;
+            return response;
 
-        }
-        catch (FileOwnarException exception){
+        } catch (FileOwnarException exception) {
             response.setStatus(CommonResponseData.FAIL);
             response.setReasonText(exception.getMessage());
             response.setReasonCode(CommonResponseData.FAIL);
             response.setResponseObject(null);
-            return  response;
+            return response;
 
-        }
-        catch (Exception exception){
+        } catch (Exception exception) {
             response.setStatus(CommonResponseData.FAIL);
             response.setReasonText(exception.getMessage());
             response.setResponseObject(null);
-            return  response;
+            return response;
 
         }
 
     }
+
     @Override
     public BaseResponse<Document> getDocument(Integer id) throws Exception {
 
         BaseResponse<Document> response = new BaseResponse<>();
-        Optional<Document> document= documentRepositoryInterface.findById(id);
+        Optional<Document> document = documentRepositoryInterface.findById(id);
 
-        if(document.isPresent() && document.get().getDeleted()==false){
-            Document decodeDocument=getDecodeDocument(document);
+        if (document.isPresent() && document.get().getDeleted() == false) {
+            Document decodeDocument = getDecodeDocument(document);
             response.setResponseObject(decodeDocument);
             response.setStatus(CommonResponseData.SUCCESS);
             response.setReasonText("Get");
             response.setReasonCode(CommonResponseData.SUCCESS);
-        }
-        else{
+        } else {
             response.setReasonText("Internal error occur");
             response.setStatus(CommonResponseData.FAIL);
             response.setReasonText("Fail");
@@ -170,7 +159,7 @@ public class DocumentServiceImplement implements DocumentServiceInterface{
     }
 
     private Document getDecodeDocument(Optional<Document> document) {
-        Document decodeDocument =document.get();
+        Document decodeDocument = document.get();
         byte[] actualByte = Base64.getDecoder()
                 .decode(decodeDocument.getDocumentData());
         decodeDocument.setDocumentData(new String(actualByte));
@@ -186,39 +175,36 @@ public class DocumentServiceImplement implements DocumentServiceInterface{
     public BaseResponse<Document> deleteDocument(Integer id) throws Exception {
         BaseResponse<Document> response = new BaseResponse<>();
         try {
-            Document document= documentRepositoryInterface.getById(id);
+            Document document = documentRepositoryInterface.getById(id);
             document.setDocumentLogs(null);
-            if(document!=null){
+            if (document != null) {
                 document.setDeleted(true);
-                document=documentRepositoryInterface.save(document);
-                DocumentLog documentLog=new DocumentLog();
+                document = documentRepositoryInterface.save(document);
+                DocumentLog documentLog = new DocumentLog();
                 documentLog.setDocuments(document);
-                documentLog=documentLogRepositoryInterface.save(documentLog);
-                if(documentLog.getDocumentLog_Id()>0){
+                documentLog = documentLogRepositoryInterface.save(documentLog);
+                if (documentLog.getDocumentLog_Id() > 0) {
                     response.setResponseObject(null);
                     response.setReasonCode(CommonResponseData.SUCCESS);
                     response.setStatus(CommonResponseData.SUCCESS);
                     response.setReasonText("Document is deleted");
-                }
-                else {
+                } else {
                     response.setReasonText("Document is log is updated ");
                     response.setStatus(CommonResponseData.FAIL);
                     response.setReasonCode(CommonResponseData.FAIL);
                 }
-            }
-            else{
+            } else {
                 response.setReasonText("Document is not found ");
                 response.setReasonCode(CommonResponseData.FAIL);
                 response.setStatus(CommonResponseData.FAIL);
             }
             return response;
-        }
-        catch (Exception ex){
+        } catch (Exception ex) {
             response.setStatus(CommonResponseData.FAIL);
             response.setReasonText(ex.getMessage());
             response.setReasonCode(CommonResponseData.FAIL);
             response.setResponseObject(null);
-            return  response;
+            return response;
         }
 
     }
@@ -227,15 +213,14 @@ public class DocumentServiceImplement implements DocumentServiceInterface{
     public BaseResponse<UserDetails> getDocumentByUser(Integer id) throws Exception {
         BaseResponse<UserDetails> response = new BaseResponse<>();
         Optional<UserDetails> userDetails;
-        userDetails =userRepositoryInterface.findById(id);
-        UserDetails processUserDetails=userDetails.get();
-        if(userDetails !=null){
+        userDetails = userRepositoryInterface.findById(id);
+        UserDetails processUserDetails = userDetails.get();
+        if (userDetails != null) {
             response.setReasonText("Suceess");
             response.setStatus(CommonResponseData.SUCCESS);
             response.setResponseObject(processUserDetails);
             response.setReasonCode(CommonResponseData.SUCCESS);
-        }
-        else{
+        } else {
             response.setReasonText("Not found");
             response.setReasonCode(CommonResponseData.FAIL);
             response.setStatus(CommonResponseData.FAIL);

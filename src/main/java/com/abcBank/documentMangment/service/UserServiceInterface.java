@@ -6,6 +6,7 @@ import com.abcBank.documentMangment.model.UserDetails;
 public interface UserServiceInterface {
 
     BaseResponse<UserDetails> saveUser(UserDetails userDetails) throws Exception;
+
     public BaseResponse<UserDetails> upadteUser(UserDetails userDetails) throws Exception;
 
     BaseResponse<UserDetails> getUser(Integer id) throws Exception;

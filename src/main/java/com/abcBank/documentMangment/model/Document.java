@@ -42,7 +42,7 @@ public class Document implements Serializable {
 
     @JsonBackReference
     @ManyToOne()
-    @JoinColumn(name="user_Id", nullable=false)
+    @JoinColumn(name = "user_Id", nullable = false)
     private UserDetails userDetails;
 
 
@@ -50,7 +50,7 @@ public class Document implements Serializable {
     private Boolean deleted = false;
 
     @JsonManagedReference
-    @OneToMany(mappedBy = "documents",fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "documents", fetch = FetchType.EAGER)
     private List<DocumentLog> documentLogs;
 }
 

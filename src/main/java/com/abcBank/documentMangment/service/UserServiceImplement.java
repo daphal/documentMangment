@@ -16,22 +16,22 @@ import java.util.Optional;
 import static java.util.stream.Collectors.toList;
 
 @Service
-public class UserServiceImplement implements UserServiceInterface{
+public class UserServiceImplement implements UserServiceInterface {
     @Autowired
     UserRepositoryInterface userRepositoryInterface;
     @Autowired
     DocumentRepositoryInterface documentRepositoryInterface;
+
     @Override
     public BaseResponse<UserDetails> saveUser(UserDetails userDetails) throws Exception {
         BaseResponse<UserDetails> response = new BaseResponse<>();
-        userDetails =userRepositoryInterface.save(userDetails);
-        if(userDetails.getUser_Id()>0){
+        userDetails = userRepositoryInterface.save(userDetails);
+        if (userDetails.getUser_Id() > 0) {
             response.setResponseObject(userDetails);
             response.setReasonText("Save");
             response.setReasonCode("200");
             response.setReasonCode(CommonResponseData.SUCCESS);
-        }
-        else{
+        } else {
             response.setReasonText("error");
             response.setReasonCode("500");
             response.setStatus(CommonResponseData.FAIL);
@@ -42,14 +42,13 @@ public class UserServiceImplement implements UserServiceInterface{
     @Override
     public BaseResponse<UserDetails> upadteUser(UserDetails userDetails) throws Exception {
         BaseResponse<UserDetails> response = new BaseResponse<>();
-        userDetails =userRepositoryInterface.save(userDetails);
-        if(userDetails.getUser_Id()>0){
+        userDetails = userRepositoryInterface.save(userDetails);
+        if (userDetails.getUser_Id() > 0) {
             response.setResponseObject(userDetails);
             response.setReasonText("get");
             response.setReasonCode("200");
             response.setReasonCode(CommonResponseData.SUCCESS);
-        }
-        else{
+        } else {
             response.setReasonText("error");
             response.setReasonCode("500");
             response.setStatus(CommonResponseData.FAIL);
@@ -62,24 +61,23 @@ public class UserServiceImplement implements UserServiceInterface{
     public BaseResponse<UserDetails> getUser(Integer id) throws Exception {
         BaseResponse<UserDetails> response = new BaseResponse<>();
         Optional<UserDetails> userDetails;
-        userDetails =userRepositoryInterface.findById(id);
-        UserDetails processUserDetails=userDetails.get();
-        List<Document> documents=processUserDetails.getDocuments();
+        userDetails = userRepositoryInterface.findById(id);
+        UserDetails processUserDetails = userDetails.get();
+        List<Document> documents = processUserDetails.getDocuments();
         List<Document> documentsList =
                 documents.stream()
                         .filter(n -> {
-                            n=getDecodeDocument(n);
-                            return n.getDeleted()== false;
+                            n = getDecodeDocument(n);
+                            return n.getDeleted() == false;
                         })
                         .collect(toList());
         processUserDetails.setDocuments(documentsList);
-        if(userDetails !=null){
+        if (userDetails != null) {
             response.setReasonText("get");
             response.setReasonCode("200");
             response.setStatus(CommonResponseData.SUCCESS);
             response.setResponseObject(processUserDetails);
-        }
-        else{
+        } else {
             response.setReasonText("error");
             response.setReasonCode("500");
             response.setStatus(CommonResponseData.FAIL);
@@ -91,15 +89,14 @@ public class UserServiceImplement implements UserServiceInterface{
     public BaseResponse<UserDetails> getAllUser() throws Exception {
         BaseResponse<UserDetails> response = new BaseResponse<>();
         List<UserDetails> userDetails;
-        userDetails =userRepositoryInterface.findAll();
-        if(!userDetails.isEmpty()){
+        userDetails = userRepositoryInterface.findAll();
+        if (!userDetails.isEmpty()) {
             response.setResponseListObject(userDetails);
             response.setReasonText("Get");
             response.setReasonCode("200");
             response.setStatus("OK");
             response.setReasonCode(CommonResponseData.SUCCESS);
-        }
-        else{
+        } else {
             response.setReasonText("error");
             response.setReasonCode("500");
             response.setStatus(CommonResponseData.FAIL);
@@ -116,8 +113,9 @@ public class UserServiceImplement implements UserServiceInterface{
         response.setReasonCode("200");
         return response;
     }
+
     private Document getDecodeDocument(Document document) {
-        Document decodeDocument =document;
+        Document decodeDocument = document;
         byte[] actualByte = Base64.getDecoder()
                 .decode(decodeDocument.getDocumentData());
         decodeDocument.setDocumentData(new String(actualByte));

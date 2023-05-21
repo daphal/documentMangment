@@ -25,11 +25,12 @@ public class DocumentLog {
     private Integer documentLog_Id;
 
     @Column(name = "documentModifedTime")
-    private LocalDateTime documentModifedTime= LocalDateTime.now();;
+    private LocalDateTime documentModifedTime = LocalDateTime.now();
+    ;
 
     @ManyToOne
     @JsonBackReference
-    @JoinColumn(name="document_Id", nullable=false)
+    @JoinColumn(name = "document_Id", nullable = false)
     private Document documents;
 
 }
