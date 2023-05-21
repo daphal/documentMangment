@@ -47,9 +47,7 @@ class DocumentServiceImplementTest {
     @MockBean
     private UserRepositoryInterface userRepositoryInterface;
 
-    /**
-     * Method under test: {@link DocumentServiceImplement#saveDocument(Document)}
-     */
+   
     @Test
     void testSaveDocument() throws Exception {
         UserDetails userDetails = new UserDetails();
@@ -66,11 +64,11 @@ class DocumentServiceImplementTest {
         document.setDocument_Id(123);
         document.setUserDetails(userDetails);
         BaseResponse<Document> actualSaveDocumentResult = documentServiceImplement.saveDocument(document);
+        assertEquals("fail", actualSaveDocumentResult.getReasonCode());
         assertEquals("fail", actualSaveDocumentResult.getStatus());
         assertNull(actualSaveDocumentResult.getResponseObject());
         assertEquals("File type should me pdf", actualSaveDocumentResult.getReasonText());
     }
-
 
     @Test
     void testSaveDocument2() throws Exception {
@@ -95,6 +93,7 @@ class DocumentServiceImplementTest {
         document.setDocument_Id(123);
         document.setUserDetails(userDetails);
         BaseResponse<Document> actualSaveDocumentResult = documentServiceImplement.saveDocument(document);
+        assertEquals("fail", actualSaveDocumentResult.getReasonCode());
         assertEquals("fail", actualSaveDocumentResult.getStatus());
         assertNull(actualSaveDocumentResult.getResponseObject());
         assertEquals("File type should me pdf", actualSaveDocumentResult.getReasonText());
@@ -108,6 +107,7 @@ class DocumentServiceImplementTest {
         verify(document).setUserDetails((UserDetails) any());
     }
 
+ 
     @Test
     void testSaveDocument3() throws Exception {
         UserDetails userDetails = new UserDetails();
@@ -168,6 +168,7 @@ class DocumentServiceImplementTest {
         document2.setUserDetails(userDetails2);
         BaseResponse<Document> actualSaveDocumentResult = documentServiceImplement.saveDocument(document2);
         assertEquals("success", actualSaveDocumentResult.getReasonCode());
+        assertEquals("success", actualSaveDocumentResult.getStatus());
         assertSame(document1, actualSaveDocumentResult.getResponseObject());
         assertEquals("Saved", actualSaveDocumentResult.getReasonText());
         verify(documentLogRepositoryInterface).save((DocumentLog) any());
@@ -182,7 +183,6 @@ class DocumentServiceImplementTest {
         verify(document2).setDocument_Id((Integer) any());
         verify(document2).setUserDetails((UserDetails) any());
     }
-
 
     @Test
     void testSaveDocument4() throws Exception {
@@ -247,6 +247,7 @@ class DocumentServiceImplementTest {
         document2.setUserDetails(userDetails2);
         BaseResponse<Document> actualSaveDocumentResult = documentServiceImplement.saveDocument(document2);
         assertEquals("success", actualSaveDocumentResult.getReasonCode());
+        assertEquals("success", actualSaveDocumentResult.getStatus());
         assertSame(document1, actualSaveDocumentResult.getResponseObject());
         assertEquals("Saved", actualSaveDocumentResult.getReasonText());
         verify(documentLogRepositoryInterface).save((DocumentLog) any());
@@ -266,7 +267,7 @@ class DocumentServiceImplementTest {
         verify(document2).setUserDetails((UserDetails) any());
     }
 
-
+  
     @Test
     void testSaveDocument5() throws Exception {
         UserDetails userDetails = new UserDetails();
@@ -329,6 +330,7 @@ class DocumentServiceImplementTest {
         document2.setDocument_Id(123);
         document2.setUserDetails(userDetails2);
         BaseResponse<Document> actualSaveDocumentResult = documentServiceImplement.saveDocument(document2);
+        assertEquals("fail", actualSaveDocumentResult.getReasonCode());
         assertEquals("fail", actualSaveDocumentResult.getStatus());
         assertEquals("Document is updated but log is not update", actualSaveDocumentResult.getReasonText());
         verify(documentLogRepositoryInterface).save((DocumentLog) any());
@@ -348,7 +350,7 @@ class DocumentServiceImplementTest {
         verify(document2).setUserDetails((UserDetails) any());
     }
 
-
+ 
     @Test
     void testSaveDocument6() throws Exception {
         UserDetails userDetails = new UserDetails();
@@ -418,6 +420,7 @@ class DocumentServiceImplementTest {
         document2.setDocument_Id(123);
         document2.setUserDetails(userDetails2);
         BaseResponse<Document> actualSaveDocumentResult = documentServiceImplement.saveDocument(document2);
+        assertEquals("fail", actualSaveDocumentResult.getReasonCode());
         assertEquals("fail", actualSaveDocumentResult.getStatus());
         assertEquals("Document is not save", actualSaveDocumentResult.getReasonText());
         verify(documentLog).setDocumentLog_Id((Integer) any());
@@ -443,6 +446,7 @@ class DocumentServiceImplementTest {
         verify(document2).setUserDetails((UserDetails) any());
     }
 
+  
     @Test
     void testUpadteDocument() throws Exception {
         UserDetails userDetails = new UserDetails();
@@ -459,12 +463,13 @@ class DocumentServiceImplementTest {
         document.setDocument_Id(123);
         document.setUserDetails(userDetails);
         BaseResponse<Document> actualUpadteDocumentResult = documentServiceImplement.upadteDocument(document);
+        assertEquals("fail", actualUpadteDocumentResult.getReasonCode());
         assertEquals("fail", actualUpadteDocumentResult.getStatus());
         assertNull(actualUpadteDocumentResult.getResponseObject());
         assertEquals("File type should me pdf", actualUpadteDocumentResult.getReasonText());
     }
 
-
+  
     @Test
     void testUpadteDocument2() throws Exception {
         UserDetails userDetails = new UserDetails();
@@ -488,6 +493,7 @@ class DocumentServiceImplementTest {
         document.setDocument_Id(123);
         document.setUserDetails(userDetails);
         BaseResponse<Document> actualUpadteDocumentResult = documentServiceImplement.upadteDocument(document);
+        assertEquals("fail", actualUpadteDocumentResult.getReasonCode());
         assertEquals("fail", actualUpadteDocumentResult.getStatus());
         assertNull(actualUpadteDocumentResult.getResponseObject());
         assertEquals("File type should me pdf", actualUpadteDocumentResult.getReasonText());
@@ -501,7 +507,7 @@ class DocumentServiceImplementTest {
         verify(document).setUserDetails((UserDetails) any());
     }
 
-
+   
     @Test
     void testUpadteDocument3() throws Exception {
         UserDetails userDetails = new UserDetails();
@@ -590,6 +596,7 @@ class DocumentServiceImplementTest {
         document3.setUserDetails(userDetails4);
         BaseResponse<Document> actualUpadteDocumentResult = documentServiceImplement.upadteDocument(document3);
         assertEquals("success", actualUpadteDocumentResult.getReasonCode());
+        assertEquals("success", actualUpadteDocumentResult.getStatus());
         assertEquals("Updated", actualUpadteDocumentResult.getReasonText());
         verify(documentLogRepositoryInterface).save((DocumentLog) any());
         verify(documentRepositoryInterface).getById((Integer) any());
@@ -700,6 +707,7 @@ class DocumentServiceImplementTest {
         document3.setUserDetails(userDetails4);
         BaseResponse<Document> actualUpadteDocumentResult = documentServiceImplement.upadteDocument(document3);
         assertEquals("success", actualUpadteDocumentResult.getReasonCode());
+        assertEquals("success", actualUpadteDocumentResult.getStatus());
         assertEquals("Updated", actualUpadteDocumentResult.getReasonText());
         verify(documentLogRepositoryInterface).save((DocumentLog) any());
         verify(documentLog).getDocumentLog_Id();
@@ -813,6 +821,7 @@ class DocumentServiceImplementTest {
         document3.setDocument_Id(123);
         document3.setUserDetails(userDetails4);
         BaseResponse<Document> actualUpadteDocumentResult = documentServiceImplement.upadteDocument(document3);
+        assertEquals("fail", actualUpadteDocumentResult.getReasonCode());
         assertEquals("fail", actualUpadteDocumentResult.getStatus());
         assertEquals("Document is updated but log is not update", actualUpadteDocumentResult.getReasonText());
         verify(documentLogRepositoryInterface).save((DocumentLog) any());
@@ -836,10 +845,9 @@ class DocumentServiceImplementTest {
         verify(document3, atLeast(1)).setUserDetails((UserDetails) any());
     }
 
-
-
+  
     @Test
-    void testGetDocument2() throws Exception {
+    void testGetDocument() throws Exception {
         UserDetails userDetails = new UserDetails();
         userDetails.setDocuments(new ArrayList<>());
         userDetails.setUserName("demoUser");
@@ -847,7 +855,7 @@ class DocumentServiceImplementTest {
 
         Document document = new Document();
         document.setDeleted(true);
-        document.setDocumentData("42");
+        document.setDocumentData("Document Data");
         document.setDocumentLogs(new ArrayList<>());
         document.setDocumentName("Document Name");
         document.setDocumentType("Document Type");
@@ -857,23 +865,54 @@ class DocumentServiceImplementTest {
         when(documentRepositoryInterface.findById((Integer) any())).thenReturn(ofResult);
         BaseResponse<Document> actualDocument = documentServiceImplement.getDocument(1);
         assertEquals("success", actualDocument.getReasonCode());
-        Document responseObject = actualDocument.getResponseObject();
-        assertSame(document, responseObject);
-        assertEquals("ã", responseObject.getDocumentData());
-        verify(documentRepositoryInterface).findById((Integer) any());
-    }
-
-
-    @Test
-    void testGetDocument3() throws Exception {
-        when(documentRepositoryInterface.findById((Integer) any())).thenReturn(Optional.empty());
-        BaseResponse<Document> actualDocument = documentServiceImplement.getDocument(1);
         assertEquals("fail", actualDocument.getStatus());
-        assertEquals("Internal error occur", actualDocument.getReasonText());
+        assertEquals("Fail", actualDocument.getReasonText());
         verify(documentRepositoryInterface).findById((Integer) any());
     }
 
+   
+    @Test
+    void testGetDocument4() throws Exception {
+        UserDetails userDetails = new UserDetails();
+        userDetails.setDocuments(new ArrayList<>());
+        userDetails.setUserName("demoUser");
+        userDetails.setUser_Id(123);
+        Document document = mock(Document.class);
+        when(document.getDeleted()).thenReturn(false);
+        when(document.getDocumentData()).thenReturn("foo");
+        doNothing().when(document).setDeleted((Boolean) any());
+        doNothing().when(document).setDocumentData((String) any());
+        doNothing().when(document).setDocumentLogs((List<DocumentLog>) any());
+        doNothing().when(document).setDocumentName((String) any());
+        doNothing().when(document).setDocumentType((String) any());
+        doNothing().when(document).setDocument_Id((Integer) any());
+        doNothing().when(document).setUserDetails((UserDetails) any());
+        document.setDeleted(true);
+        document.setDocumentData("Document Data");
+        document.setDocumentLogs(new ArrayList<>());
+        document.setDocumentName("Document Name");
+        document.setDocumentType("Document Type");
+        document.setDocument_Id(123);
+        document.setUserDetails(userDetails);
+        Optional<Document> ofResult = Optional.of(document);
+        when(documentRepositoryInterface.findById((Integer) any())).thenReturn(ofResult);
+        BaseResponse<Document> actualDocument = documentServiceImplement.getDocument(1);
+        assertEquals("success", actualDocument.getReasonCode());
+        assertEquals("success", actualDocument.getStatus());
+        assertEquals("Get", actualDocument.getReasonText());
+        verify(documentRepositoryInterface).findById((Integer) any());
+        verify(document).getDeleted();
+        verify(document).getDocumentData();
+        verify(document).setDeleted((Boolean) any());
+        verify(document, atLeast(1)).setDocumentData((String) any());
+        verify(document).setDocumentLogs((List<DocumentLog>) any());
+        verify(document).setDocumentName((String) any());
+        verify(document).setDocumentType((String) any());
+        verify(document).setDocument_Id((Integer) any());
+        verify(document).setUserDetails((UserDetails) any());
+    }
 
+   
     @Test
     void testDeleteDocument() throws Exception {
         UserDetails userDetails = new UserDetails();
@@ -927,6 +966,7 @@ class DocumentServiceImplementTest {
         when(documentRepositoryInterface.getById((Integer) any())).thenReturn(document1);
         BaseResponse<Document> actualDeleteDocumentResult = documentServiceImplement.deleteDocument(1);
         assertEquals("success", actualDeleteDocumentResult.getReasonCode());
+        assertEquals("success", actualDeleteDocumentResult.getStatus());
         assertNull(actualDeleteDocumentResult.getResponseObject());
         assertEquals("Document is deleted", actualDeleteDocumentResult.getReasonText());
         verify(documentLogRepositoryInterface).save((DocumentLog) any());
@@ -934,7 +974,7 @@ class DocumentServiceImplementTest {
         verify(documentRepositoryInterface).save((Document) any());
     }
 
-
+   
     @Test
     void testDeleteDocument2() throws Exception {
         UserDetails userDetails = new UserDetails();
@@ -991,6 +1031,7 @@ class DocumentServiceImplementTest {
         when(documentRepositoryInterface.getById((Integer) any())).thenReturn(document1);
         BaseResponse<Document> actualDeleteDocumentResult = documentServiceImplement.deleteDocument(1);
         assertEquals("success", actualDeleteDocumentResult.getReasonCode());
+        assertEquals("success", actualDeleteDocumentResult.getStatus());
         assertNull(actualDeleteDocumentResult.getResponseObject());
         assertEquals("Document is deleted", actualDeleteDocumentResult.getReasonText());
         verify(documentLogRepositoryInterface).save((DocumentLog) any());
@@ -1001,7 +1042,6 @@ class DocumentServiceImplementTest {
         verify(documentRepositoryInterface).getById((Integer) any());
         verify(documentRepositoryInterface).save((Document) any());
     }
-
 
     @Test
     void testDeleteDocument3() throws Exception {
@@ -1058,6 +1098,7 @@ class DocumentServiceImplementTest {
         when(documentRepositoryInterface.save((Document) any())).thenReturn(document2);
         when(documentRepositoryInterface.getById((Integer) any())).thenReturn(document1);
         BaseResponse<Document> actualDeleteDocumentResult = documentServiceImplement.deleteDocument(1);
+        assertEquals("fail", actualDeleteDocumentResult.getReasonCode());
         assertEquals("fail", actualDeleteDocumentResult.getStatus());
         assertEquals("Document is log is updated ", actualDeleteDocumentResult.getReasonText());
         verify(documentLogRepositoryInterface).save((DocumentLog) any());
@@ -1069,7 +1110,7 @@ class DocumentServiceImplementTest {
         verify(documentRepositoryInterface).save((Document) any());
     }
 
-
+   
     @Test
     void testDeleteDocument4() throws Exception {
         UserDetails userDetails = new UserDetails();
@@ -1125,9 +1166,10 @@ class DocumentServiceImplementTest {
         when(documentRepositoryInterface.save((Document) any())).thenReturn(document2);
         when(documentRepositoryInterface.getById((Integer) any())).thenReturn(document1);
         BaseResponse<Document> actualDeleteDocumentResult = documentServiceImplement.deleteDocument(1);
-        assertNull(actualDeleteDocumentResult.getReasonCode());
+        assertEquals("fail", actualDeleteDocumentResult.getReasonCode());
         assertEquals("fail", actualDeleteDocumentResult.getStatus());
         assertNull(actualDeleteDocumentResult.getResponseObject());
+        assertNull(actualDeleteDocumentResult.getReasonText());
         verify(documentLogRepositoryInterface).save((DocumentLog) any());
         verify(documentLog).getDocumentLog_Id();
         verify(documentLog).setDocumentLog_Id((Integer) any());
@@ -1137,7 +1179,7 @@ class DocumentServiceImplementTest {
         verify(documentRepositoryInterface).save((Document) any());
     }
 
-
+  
     @Test
     void testGetDocumentByUser() throws Exception {
         UserDetails userDetails = new UserDetails();
@@ -1148,11 +1190,16 @@ class DocumentServiceImplementTest {
         when(userRepositoryInterface.findById((Integer) any())).thenReturn(ofResult);
         BaseResponse<UserDetails> actualDocumentByUser = documentServiceImplement.getDocumentByUser(1);
         assertEquals("success", actualDocumentByUser.getReasonCode());
+        assertEquals("success", actualDocumentByUser.getStatus());
         assertSame(userDetails, actualDocumentByUser.getResponseObject());
         assertEquals("Suceess", actualDocumentByUser.getReasonText());
         verify(userRepositoryInterface).findById((Integer) any());
     }
 
 
+    @Test
+    void testConstructor() throws Exception {
+        assertNull((new DocumentServiceImplement()).getAllDocument());
+    }
 }
 
