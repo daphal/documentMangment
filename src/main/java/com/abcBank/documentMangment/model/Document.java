@@ -24,7 +24,7 @@ import java.util.List;
 public class Document implements Serializable {
 
     @Id
-    @GeneratedValue()
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "document_Id")
     private Integer document_Id;
 

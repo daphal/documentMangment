@@ -31,6 +31,7 @@ public class UserController {
                 baseResponse.setStatus("Ok");
                 baseResponse.setResponseObject(userBaseResponse.getResponseObject());
                 baseResponse.setReasonText(userBaseResponse.getReasonText());
+                baseResponse.setReasonCode(userBaseResponse.getReasonCode());
                 return new ResponseEntity<BaseResponse<?>>(baseResponse, null, HttpStatus.ACCEPTED);
             } else {
                 baseResponse.setStatus(userBaseResponse.getStatus());

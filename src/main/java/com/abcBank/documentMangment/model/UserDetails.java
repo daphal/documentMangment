@@ -21,7 +21,7 @@ import java.util.Set;
 public class UserDetails {
 
     @Id
-    @GeneratedValue()
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_Id")
     private Integer user_Id;
 

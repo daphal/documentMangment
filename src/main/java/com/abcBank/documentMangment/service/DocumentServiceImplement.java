@@ -36,17 +36,21 @@ public class DocumentServiceImplement implements DocumentServiceInterface{
                     documentLog=documentLogRepositoryInterface.save(documentLog);
                     if(documentLog.getDocumentLog_Id()>0){
                         response.setResponseObject(document);
+                        response.setStatus(CommonResponseData.SUCCESS);
                         response.setReasonCode(CommonResponseData.SUCCESS);
                         response.setReasonText("Saved");
                     }
                     else {
                         response.setReasonText("Document is updated but log is not update");
                         response.setStatus(CommonResponseData.FAIL);
+                        response.setReasonCode(CommonResponseData.FAIL);
+
                     }
                 }
                 else{
                     response.setReasonText("Document is not save");
                     response.setStatus(CommonResponseData.FAIL);
+                    response.setReasonCode(CommonResponseData.FAIL);
                 }
                 return response;
             }
@@ -59,12 +63,14 @@ public class DocumentServiceImplement implements DocumentServiceInterface{
         catch (FileTypeException exception){
             response.setStatus(CommonResponseData.FAIL);
             response.setReasonText(exception.getMessage());
+            response.setReasonCode(CommonResponseData.FAIL);
             response.setResponseObject(null);
             return  response;
 
         }
         catch (Exception exception){
             response.setStatus(CommonResponseData.FAIL);
+            response.setReasonCode(CommonResponseData.FAIL);
             response.setReasonText(exception.getMessage());
             response.setResponseObject(null);
             return  response;
@@ -95,11 +101,13 @@ public class DocumentServiceImplement implements DocumentServiceInterface{
                         if(documentLog.getDocumentLog_Id()>0){
                             response.setResponseObject(document);
                             response.setReasonText("Updated");
+                            response.setStatus(CommonResponseData.SUCCESS);
                             response.setReasonCode(CommonResponseData.SUCCESS);
                         }
                         else {
                             response.setReasonText("Document is updated but log is not update");
                             response.setStatus(CommonResponseData.FAIL);
+                            response.setReasonCode(CommonResponseData.FAIL);
                         }
                     }
                     return response;
@@ -117,6 +125,7 @@ public class DocumentServiceImplement implements DocumentServiceInterface{
         catch (FileTypeException exception){
             response.setStatus(CommonResponseData.FAIL);
             response.setReasonText(exception.getMessage());
+            response.setReasonCode(CommonResponseData.FAIL);
             response.setResponseObject(null);
             return  response;
 
@@ -124,6 +133,7 @@ public class DocumentServiceImplement implements DocumentServiceInterface{
         catch (FileOwnarException exception){
             response.setStatus(CommonResponseData.FAIL);
             response.setReasonText(exception.getMessage());
+            response.setReasonCode(CommonResponseData.FAIL);
             response.setResponseObject(null);
             return  response;
 
@@ -143,14 +153,18 @@ public class DocumentServiceImplement implements DocumentServiceInterface{
         BaseResponse<Document> response = new BaseResponse<>();
         Optional<Document> document= documentRepositoryInterface.findById(id);
 
-        if(document.isPresent()){
+        if(document.isPresent() && document.get().getDeleted()==false){
             Document decodeDocument=getDecodeDocument(document);
             response.setResponseObject(decodeDocument);
+            response.setStatus(CommonResponseData.SUCCESS);
+            response.setReasonText("Get");
             response.setReasonCode(CommonResponseData.SUCCESS);
         }
         else{
             response.setReasonText("Internal error occur");
             response.setStatus(CommonResponseData.FAIL);
+            response.setReasonText("Fail");
+            response.setReasonCode(CommonResponseData.SUCCESS);
         }
         return response;
     }
@@ -183,23 +197,26 @@ public class DocumentServiceImplement implements DocumentServiceInterface{
                 if(documentLog.getDocumentLog_Id()>0){
                     response.setResponseObject(null);
                     response.setReasonCode(CommonResponseData.SUCCESS);
-                    response.setReasonCode(CommonResponseData.SUCCESS);
+                    response.setStatus(CommonResponseData.SUCCESS);
                     response.setReasonText("Document is deleted");
                 }
                 else {
                     response.setReasonText("Document is log is updated ");
                     response.setStatus(CommonResponseData.FAIL);
+                    response.setReasonCode(CommonResponseData.FAIL);
                 }
             }
             else{
                 response.setReasonText("Document is not found ");
+                response.setReasonCode(CommonResponseData.FAIL);
                 response.setStatus(CommonResponseData.FAIL);
             }
             return response;
         }
         catch (Exception ex){
             response.setStatus(CommonResponseData.FAIL);
-            response.setReasonCode(ex.getMessage());
+            response.setReasonText(ex.getMessage());
+            response.setReasonCode(CommonResponseData.FAIL);
             response.setResponseObject(null);
             return  response;
         }
@@ -214,11 +231,13 @@ public class DocumentServiceImplement implements DocumentServiceInterface{
         UserDetails processUserDetails=userDetails.get();
         if(userDetails !=null){
             response.setReasonText("Suceess");
+            response.setStatus(CommonResponseData.SUCCESS);
             response.setResponseObject(processUserDetails);
             response.setReasonCode(CommonResponseData.SUCCESS);
         }
         else{
             response.setReasonText("Not found");
+            response.setReasonCode(CommonResponseData.FAIL);
             response.setStatus(CommonResponseData.FAIL);
         }
         return response;

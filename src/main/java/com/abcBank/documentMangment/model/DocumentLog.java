@@ -20,7 +20,7 @@ import java.time.LocalDateTime;
 public class DocumentLog {
 
     @Id
-    @GeneratedValue()
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "Id")
     private Integer documentLog_Id;
 
