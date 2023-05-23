@@ -145,6 +145,9 @@ public class DocumentServiceImplement implements DocumentServiceInterface {
 
         if (document.isPresent() && document.get().getDeleted() == false) {
             Document decodeDocument = getDecodeDocument(document);
+            UserDetails userDetails=decodeDocument.getUserDetails();
+           // userDetails.setDocuments(null);
+            decodeDocument.setUserDetails(userDetails);
             response.setResponseObject(decodeDocument);
             response.setStatus(CommonResponseData.SUCCESS);
             response.setReasonText("Get");

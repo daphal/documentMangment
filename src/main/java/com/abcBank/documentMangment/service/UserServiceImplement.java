@@ -1,9 +1,6 @@
 package com.abcBank.documentMangment.service;
 
-import com.abcBank.documentMangment.model.BaseResponse;
-import com.abcBank.documentMangment.model.CommonResponseData;
-import com.abcBank.documentMangment.model.Document;
-import com.abcBank.documentMangment.model.UserDetails;
+import com.abcBank.documentMangment.model.*;
 import com.abcBank.documentMangment.repository.DocumentRepositoryInterface;
 import com.abcBank.documentMangment.repository.UserRepositoryInterface;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -113,6 +110,42 @@ public class UserServiceImplement implements UserServiceInterface {
         response.setReasonCode("200");
         return response;
     }
+
+    @Override
+    public BaseResponse<UserDetails> getUserByDocumentId(Integer documentId) {
+
+        BaseResponse<UserDetails> res = new BaseResponse<>();
+        UserDetails userDetails=null;
+        try {
+            userDetails = userRepositoryInterface.findDocumentUserId(documentId);
+            userDetails.setDocuments(userDetails.getDocuments().stream().filter(x->x.getDocument_Id()==documentId).collect(toList()));
+        }catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+        UserDetails processUserDetails = userDetails;
+        List<Document> documents = processUserDetails.getDocuments();
+        List<Document> documentsList =
+                documents.stream()
+                        .filter(n -> {
+                            n = getDecodeDocument(n);
+                            return n.getDeleted() == false;
+                        })
+                        .collect(toList());
+        processUserDetails.setDocuments(documentsList);
+        if (userDetails != null) {
+            res.setReasonText("get");
+            res.setReasonCode("200");
+            res.setStatus(CommonResponseData.SUCCESS);
+            res.setResponseObject(processUserDetails);
+        } else {
+            res.setReasonText("error");
+            res.setReasonCode("500");
+            res.setStatus(CommonResponseData.FAIL);
+        }
+        return res;
+    }
+
 
     private Document getDecodeDocument(Document document) {
         Document decodeDocument = document;

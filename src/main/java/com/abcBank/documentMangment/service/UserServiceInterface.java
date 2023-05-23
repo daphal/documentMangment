@@ -14,4 +14,6 @@ public interface UserServiceInterface {
     BaseResponse<UserDetails> getAllUser() throws Exception;
 
     BaseResponse<UserDetails> deleteUser(Integer id) throws Exception;
+
+    BaseResponse<UserDetails> getUserByDocumentId(Integer documentId);
 }

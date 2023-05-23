@@ -54,6 +54,14 @@ public class UserController {
         return responseEntity;
 
     }
+    @GetMapping("/getUserByDocumentId/{id}")
+    public ResponseEntity<BaseResponse<?>> getUserByDocumentId(@PathVariable Integer id, HttpServletRequest request) throws Exception {
+
+        BaseResponse<UserDetails> user = userServiceInterface.getUserByDocumentId(id);
+        ResponseEntity responseEntity = new ResponseEntity<>(user, null, HttpStatus.ACCEPTED);
+        return responseEntity;
+
+    }
 
 
 }
