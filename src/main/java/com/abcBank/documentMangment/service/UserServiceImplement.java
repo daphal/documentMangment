@@ -114,36 +114,26 @@ public class UserServiceImplement implements UserServiceInterface {
     @Override
     public BaseResponse<UserDetails> getUserByDocumentId(Integer documentId) {
 
-        BaseResponse<UserDetails> res = new BaseResponse<>();
-        UserDetails userDetails=null;
+        BaseResponse<UserDetails> response = new BaseResponse<>();
+        UserDetails userDetails = null;
         try {
             userDetails = userRepositoryInterface.findDocumentUserId(documentId);
-            userDetails.setDocuments(userDetails.getDocuments().stream().filter(x->x.getDocument_Id()==documentId).collect(toList()));
-        }catch(Exception e)
-        {
+            userDetails.setDocuments(userDetails.getDocuments().stream().filter(x -> x.getDocument_Id() == documentId && x.getDeleted() == false).collect(toList()));
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        UserDetails processUserDetails = userDetails;
-        List<Document> documents = processUserDetails.getDocuments();
-        List<Document> documentsList =
-                documents.stream()
-                        .filter(n -> {
-                            n = getDecodeDocument(n);
-                            return n.getDeleted() == false;
-                        })
-                        .collect(toList());
-        processUserDetails.setDocuments(documentsList);
+        ;
         if (userDetails != null) {
-            res.setReasonText("get");
-            res.setReasonCode("200");
-            res.setStatus(CommonResponseData.SUCCESS);
-            res.setResponseObject(processUserDetails);
+            response.setReasonText("get");
+            response.setReasonCode("200");
+            response.setStatus(CommonResponseData.SUCCESS);
+            response.setResponseObject(userDetails);
         } else {
-            res.setReasonText("error");
-            res.setReasonCode("500");
-            res.setStatus(CommonResponseData.FAIL);
+            response.setReasonText("error");
+            response.setReasonCode("500");
+            response.setStatus(CommonResponseData.FAIL);
         }
-        return res;
+        return response;
     }
 
 

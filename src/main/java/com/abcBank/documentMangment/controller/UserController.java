@@ -5,6 +5,7 @@ import com.abcBank.documentMangment.model.CommonResponseData;
 import com.abcBank.documentMangment.model.Document;
 import com.abcBank.documentMangment.model.UserDetails;
 import com.abcBank.documentMangment.service.UserServiceInterface;
+import io.swagger.v3.oas.annotations.headers.Header;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -54,6 +55,7 @@ public class UserController {
         return responseEntity;
 
     }
+
     @GetMapping("/getUserByDocumentId/{id}")
     public ResponseEntity<BaseResponse<?>> getUserByDocumentId(@PathVariable Integer id, HttpServletRequest request) throws Exception {
 

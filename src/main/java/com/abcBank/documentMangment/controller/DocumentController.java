@@ -49,7 +49,6 @@ public class DocumentController {
 
     @DeleteMapping("/deleteDocument/{id}")
     public ResponseEntity<BaseResponse<?>> deleteDocument(@PathVariable Integer id, HttpServletRequest request) throws Exception {
-
         BaseResponse<Document> document = documentServiceInterface.deleteDocument(id);
         ResponseEntity responseEntity = new ResponseEntity<>(document, null, HttpStatus.ACCEPTED);
         return responseEntity;

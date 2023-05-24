@@ -88,6 +88,53 @@ class UserServiceImplementTest {
         verify(userDetails).setUser_Id((Integer) any());
     }
 
+    @Test
+    void testSaveUser3() throws Exception {
+        UserDetails userDetails = new UserDetails();
+        userDetails.setDocuments(new ArrayList<>());
+        userDetails.setUserName("demoUser");
+        userDetails.setUser_Id(123);
+        when(userRepositoryInterface.save((UserDetails) any())).thenReturn(userDetails);
+
+        UserDetails userDetails1 = new UserDetails();
+        userDetails1.setDocuments(new ArrayList<>());
+        userDetails1.setUserName("demoUser");
+        userDetails1.setUser_Id(123);
+        BaseResponse<UserDetails> actualSaveUserResult = userServiceImplement.saveUser(userDetails1);
+        assertEquals("success", actualSaveUserResult.getReasonCode());
+        assertSame(userDetails, actualSaveUserResult.getResponseObject());
+        assertEquals("Save", actualSaveUserResult.getReasonText());
+        verify(userRepositoryInterface).save((UserDetails) any());
+    }
+
+
+    @Test
+    void testSaveUser4() throws Exception {
+        UserDetails userDetails = mock(UserDetails.class);
+        when(userDetails.getUser_Id()).thenReturn(-1);
+        doNothing().when(userDetails).setDocuments((List<Document>) any());
+        doNothing().when(userDetails).setUserName((String) any());
+        doNothing().when(userDetails).setUser_Id((Integer) any());
+        userDetails.setDocuments(new ArrayList<>());
+        userDetails.setUserName("demoUser");
+        userDetails.setUser_Id(123);
+        when(userRepositoryInterface.save((UserDetails) any())).thenReturn(userDetails);
+
+        UserDetails userDetails1 = new UserDetails();
+        userDetails1.setDocuments(new ArrayList<>());
+        userDetails1.setUserName("demoUser");
+        userDetails1.setUser_Id(123);
+        BaseResponse<UserDetails> actualSaveUserResult = userServiceImplement.saveUser(userDetails1);
+        assertEquals("500", actualSaveUserResult.getReasonCode());
+        assertEquals("fail", actualSaveUserResult.getStatus());
+        assertEquals("error", actualSaveUserResult.getReasonText());
+        verify(userRepositoryInterface).save((UserDetails) any());
+        verify(userDetails).getUser_Id();
+        verify(userDetails).setDocuments((List<Document>) any());
+        verify(userDetails).setUserName((String) any());
+        verify(userDetails).setUser_Id((Integer) any());
+    }
+
 
     @Test
     void testUpadteUser() throws Exception {
@@ -124,6 +171,54 @@ class UserServiceImplementTest {
         UserDetails userDetails1 = new UserDetails();
         userDetails1.setDocuments(new ArrayList<>());
         userDetails1.setUserName("abcUSer");
+        userDetails1.setUser_Id(123);
+        BaseResponse<UserDetails> actualUpadteUserResult = userServiceImplement.upadteUser(userDetails1);
+        assertEquals("500", actualUpadteUserResult.getReasonCode());
+        assertEquals("fail", actualUpadteUserResult.getStatus());
+        assertEquals("error", actualUpadteUserResult.getReasonText());
+        verify(userRepositoryInterface).save((UserDetails) any());
+        verify(userDetails).getUser_Id();
+        verify(userDetails).setDocuments((List<Document>) any());
+        verify(userDetails).setUserName((String) any());
+        verify(userDetails).setUser_Id((Integer) any());
+    }
+
+
+    @Test
+    void testUpadteUser3() throws Exception {
+        UserDetails userDetails = new UserDetails();
+        userDetails.setDocuments(new ArrayList<>());
+        userDetails.setUserName("demoUser");
+        userDetails.setUser_Id(123);
+        when(userRepositoryInterface.save((UserDetails) any())).thenReturn(userDetails);
+
+        UserDetails userDetails1 = new UserDetails();
+        userDetails1.setDocuments(new ArrayList<>());
+        userDetails1.setUserName("demoUser");
+        userDetails1.setUser_Id(123);
+        BaseResponse<UserDetails> actualUpadteUserResult = userServiceImplement.upadteUser(userDetails1);
+        assertEquals("success", actualUpadteUserResult.getReasonCode());
+        assertSame(userDetails, actualUpadteUserResult.getResponseObject());
+        assertEquals("get", actualUpadteUserResult.getReasonText());
+        verify(userRepositoryInterface).save((UserDetails) any());
+    }
+
+
+    @Test
+    void testUpadteUser4() throws Exception {
+        UserDetails userDetails = mock(UserDetails.class);
+        when(userDetails.getUser_Id()).thenReturn(-1);
+        doNothing().when(userDetails).setDocuments((List<Document>) any());
+        doNothing().when(userDetails).setUserName((String) any());
+        doNothing().when(userDetails).setUser_Id((Integer) any());
+        userDetails.setDocuments(new ArrayList<>());
+        userDetails.setUserName("demoUser");
+        userDetails.setUser_Id(123);
+        when(userRepositoryInterface.save((UserDetails) any())).thenReturn(userDetails);
+
+        UserDetails userDetails1 = new UserDetails();
+        userDetails1.setDocuments(new ArrayList<>());
+        userDetails1.setUserName("demoUser");
         userDetails1.setUser_Id(123);
         BaseResponse<UserDetails> actualUpadteUserResult = userServiceImplement.upadteUser(userDetails1);
         assertEquals("500", actualUpadteUserResult.getReasonCode());
@@ -247,6 +342,62 @@ class UserServiceImplementTest {
 
 
     @Test
+    void testGetUser4() throws Exception {
+        UserDetails userDetails = new UserDetails();
+        ArrayList<Document> documentList = new ArrayList<>();
+        userDetails.setDocuments(documentList);
+        userDetails.setUserName("demoUser");
+        userDetails.setUser_Id(123);
+        Optional<UserDetails> ofResult = Optional.of(userDetails);
+        when(userRepositoryInterface.findById((Integer) any())).thenReturn(ofResult);
+        BaseResponse<UserDetails> actualUser = userServiceImplement.getUser(1);
+        assertEquals("200", actualUser.getReasonCode());
+        assertEquals("success", actualUser.getStatus());
+        UserDetails responseObject = actualUser.getResponseObject();
+        assertSame(userDetails, responseObject);
+        assertEquals("get", actualUser.getReasonText());
+        assertEquals(documentList, responseObject.getDocuments());
+        verify(userRepositoryInterface).findById((Integer) any());
+    }
+
+    @Test
+    void testGetUser5() throws Exception {
+        UserDetails userDetails = new UserDetails();
+        userDetails.setDocuments(new ArrayList<>());
+        userDetails.setUserName("demoUser");
+        userDetails.setUser_Id(123);
+
+        Document document = new Document();
+        document.setDeleted(true);
+        document.setDocumentData("get");
+        ArrayList<DocumentLog> documentLogList = new ArrayList<>();
+        document.setDocumentLogs(documentLogList);
+        document.setDocumentName("get");
+        document.setDocumentType("get");
+        document.setDocument_Id(123);
+        document.setUserDetails(userDetails);
+
+        ArrayList<Document> documentList = new ArrayList<>();
+        documentList.add(document);
+
+        UserDetails userDetails1 = new UserDetails();
+        userDetails1.setDocuments(documentList);
+        userDetails1.setUserName("demoUser");
+        userDetails1.setUser_Id(123);
+        Optional<UserDetails> ofResult = Optional.of(userDetails1);
+        when(userRepositoryInterface.findById((Integer) any())).thenReturn(ofResult);
+        BaseResponse<UserDetails> actualUser = userServiceImplement.getUser(1);
+        assertEquals("200", actualUser.getReasonCode());
+        assertEquals("success", actualUser.getStatus());
+        UserDetails responseObject = actualUser.getResponseObject();
+        assertSame(userDetails1, responseObject);
+        assertEquals("get", actualUser.getReasonText());
+        assertEquals(documentLogList, responseObject.getDocuments());
+        verify(userRepositoryInterface).findById((Integer) any());
+    }
+
+
+    @Test
     void testGetUser6() throws Exception {
         UserDetails userDetails = new UserDetails();
         userDetails.setDocuments(new ArrayList<>());
@@ -298,6 +449,109 @@ class UserServiceImplementTest {
         verify(document).setUserDetails((UserDetails) any());
     }
 
+    @Test
+    void testGetUser7() throws Exception {
+        UserDetails userDetails = new UserDetails();
+        userDetails.setDocuments(new ArrayList<>());
+        userDetails.setUserName("demoUser");
+        userDetails.setUser_Id(123);
+
+        Document document = new Document();
+        document.setDeleted(true);
+        document.setDocumentData("get");
+        ArrayList<DocumentLog> documentLogList = new ArrayList<>();
+        document.setDocumentLogs(documentLogList);
+        document.setDocumentName("get");
+        document.setDocumentType("get");
+        document.setDocument_Id(123);
+        document.setUserDetails(userDetails);
+
+        UserDetails userDetails1 = new UserDetails();
+        userDetails1.setDocuments(new ArrayList<>());
+        userDetails1.setUserName("demoUser");
+        userDetails1.setUser_Id(123);
+
+        Document document1 = new Document();
+        document1.setDeleted(true);
+        document1.setDocumentData("get");
+        document1.setDocumentLogs(new ArrayList<>());
+        document1.setDocumentName("get");
+        document1.setDocumentType("get");
+        document1.setDocument_Id(123);
+        document1.setUserDetails(userDetails1);
+
+        ArrayList<Document> documentList = new ArrayList<>();
+        documentList.add(document1);
+        documentList.add(document);
+
+        UserDetails userDetails2 = new UserDetails();
+        userDetails2.setDocuments(documentList);
+        userDetails2.setUserName("demoUser");
+        userDetails2.setUser_Id(123);
+        Optional<UserDetails> ofResult = Optional.of(userDetails2);
+        when(userRepositoryInterface.findById((Integer) any())).thenReturn(ofResult);
+        BaseResponse<UserDetails> actualUser = userServiceImplement.getUser(1);
+        assertEquals("200", actualUser.getReasonCode());
+        assertEquals("success", actualUser.getStatus());
+        UserDetails responseObject = actualUser.getResponseObject();
+        assertSame(userDetails2, responseObject);
+        assertEquals("get", actualUser.getReasonText());
+        assertEquals(documentLogList, responseObject.getDocuments());
+        verify(userRepositoryInterface).findById((Integer) any());
+    }
+
+    @Test
+    void testGetUser10() throws Exception {
+        UserDetails userDetails = new UserDetails();
+        userDetails.setDocuments(new ArrayList<>());
+        userDetails.setUserName("demoUser");
+        userDetails.setUser_Id(123);
+        Document document = mock(Document.class);
+        when(document.getDeleted()).thenReturn(false);
+        when(document.getDocumentData()).thenReturn("foo");
+        doNothing().when(document).setDeleted((Boolean) any());
+        doNothing().when(document).setDocumentData((String) any());
+        doNothing().when(document).setDocumentLogs((List<DocumentLog>) any());
+        doNothing().when(document).setDocumentName((String) any());
+        doNothing().when(document).setDocumentType((String) any());
+        doNothing().when(document).setDocument_Id((Integer) any());
+        doNothing().when(document).setUserDetails((UserDetails) any());
+        document.setDeleted(true);
+        document.setDocumentData("get");
+        document.setDocumentLogs(new ArrayList<>());
+        document.setDocumentName("get");
+        document.setDocumentType("get");
+        document.setDocument_Id(123);
+        document.setUserDetails(userDetails);
+
+        ArrayList<Document> documentList = new ArrayList<>();
+        documentList.add(document);
+
+        UserDetails userDetails1 = new UserDetails();
+        userDetails1.setDocuments(documentList);
+        userDetails1.setUserName("demoUser");
+        userDetails1.setUser_Id(123);
+        Optional<UserDetails> ofResult = Optional.of(userDetails1);
+        when(userRepositoryInterface.findById((Integer) any())).thenReturn(ofResult);
+        BaseResponse<UserDetails> actualUser = userServiceImplement.getUser(1);
+        assertEquals("200", actualUser.getReasonCode());
+        assertEquals("success", actualUser.getStatus());
+        UserDetails responseObject = actualUser.getResponseObject();
+        assertSame(userDetails1, responseObject);
+        assertEquals("get", actualUser.getReasonText());
+        assertEquals(documentList, responseObject.getDocuments());
+        verify(userRepositoryInterface).findById((Integer) any());
+        verify(document).getDeleted();
+        verify(document).getDocumentData();
+        verify(document).setDeleted((Boolean) any());
+        verify(document, atLeast(1)).setDocumentData((String) any());
+        verify(document).setDocumentLogs((List<DocumentLog>) any());
+        verify(document).setDocumentName((String) any());
+        verify(document).setDocumentType((String) any());
+        verify(document).setDocument_Id((Integer) any());
+        verify(document).setUserDetails((UserDetails) any());
+    }
+
 
     @Test
     void testGetAllUser() throws Exception {
@@ -327,6 +581,24 @@ class UserServiceImplementTest {
         verify(userRepositoryInterface).findAll();
     }
 
+    @Test
+    void testGetAllUser3() throws Exception {
+        UserDetails userDetails = new UserDetails();
+        userDetails.setDocuments(new ArrayList<>());
+        userDetails.setUserName("demoUser");
+        userDetails.setUser_Id(123);
+
+        ArrayList<UserDetails> userDetailsList = new ArrayList<>();
+        userDetailsList.add(userDetails);
+        when(userRepositoryInterface.findAll()).thenReturn(userDetailsList);
+        BaseResponse<UserDetails> actualAllUser = userServiceImplement.getAllUser();
+        assertEquals("success", actualAllUser.getReasonCode());
+        assertEquals("OK", actualAllUser.getStatus());
+        assertEquals(1, actualAllUser.getResponseListObject().size());
+        assertEquals("Get", actualAllUser.getReasonText());
+        verify(userRepositoryInterface).findAll();
+    }
+
 
     @Test
     void testDeleteUser() throws Exception {
@@ -336,6 +608,214 @@ class UserServiceImplementTest {
         assertEquals("success", actualDeleteUserResult.getStatus());
         assertEquals("deleted", actualDeleteUserResult.getReasonText());
         verify(userRepositoryInterface).deleteById((Integer) any());
+    }
+
+    @Test
+    void testGetUserByDocumentId() {
+        UserDetails userDetails = new UserDetails();
+        ArrayList<Document> documentList = new ArrayList<>();
+        userDetails.setDocuments(documentList);
+        userDetails.setUserName("demoUser");
+        userDetails.setUser_Id(123);
+        when(userRepositoryInterface.findDocumentUserId((Integer) any())).thenReturn(userDetails);
+        BaseResponse<UserDetails> actualUserByDocumentId = userServiceImplement.getUserByDocumentId(123);
+        assertEquals("200", actualUserByDocumentId.getReasonCode());
+        assertEquals("success", actualUserByDocumentId.getStatus());
+        UserDetails responseObject = actualUserByDocumentId.getResponseObject();
+        assertSame(userDetails, responseObject);
+        assertEquals("get", actualUserByDocumentId.getReasonText());
+        assertEquals(documentList, responseObject.getDocuments());
+        verify(userRepositoryInterface).findDocumentUserId((Integer) any());
+    }
+
+    @Test
+    void testGetUserByDocumentId2() {
+        UserDetails userDetails = new UserDetails();
+        userDetails.setDocuments(new ArrayList<>());
+        userDetails.setUserName("demoUser");
+        userDetails.setUser_Id(123);
+
+        Document document = new Document();
+        document.setDeleted(true);
+        document.setDocumentData("get");
+        ArrayList<DocumentLog> documentLogList = new ArrayList<>();
+        document.setDocumentLogs(documentLogList);
+        document.setDocumentName("get");
+        document.setDocumentType("get");
+        document.setDocument_Id(123);
+        document.setUserDetails(userDetails);
+
+        ArrayList<Document> documentList = new ArrayList<>();
+        documentList.add(document);
+
+        UserDetails userDetails1 = new UserDetails();
+        userDetails1.setDocuments(documentList);
+        userDetails1.setUserName("demoUser");
+        userDetails1.setUser_Id(123);
+        when(userRepositoryInterface.findDocumentUserId((Integer) any())).thenReturn(userDetails1);
+        BaseResponse<UserDetails> actualUserByDocumentId = userServiceImplement.getUserByDocumentId(123);
+        assertEquals("200", actualUserByDocumentId.getReasonCode());
+        assertEquals("success", actualUserByDocumentId.getStatus());
+        UserDetails responseObject = actualUserByDocumentId.getResponseObject();
+        assertSame(userDetails1, responseObject);
+        assertEquals("get", actualUserByDocumentId.getReasonText());
+        assertEquals(documentLogList, responseObject.getDocuments());
+        verify(userRepositoryInterface).findDocumentUserId((Integer) any());
+    }
+
+
+    @Test
+    void testGetUserByDocumentId3() {
+        UserDetails userDetails = new UserDetails();
+        userDetails.setDocuments(new ArrayList<>());
+        userDetails.setUserName("demoUser");
+        userDetails.setUser_Id(123);
+
+        Document document = new Document();
+        document.setDeleted(true);
+        document.setDocumentData("get");
+        ArrayList<DocumentLog> documentLogList = new ArrayList<>();
+        document.setDocumentLogs(documentLogList);
+        document.setDocumentName("get");
+        document.setDocumentType("get");
+        document.setDocument_Id(123);
+        document.setUserDetails(userDetails);
+
+        UserDetails userDetails1 = new UserDetails();
+        userDetails1.setDocuments(new ArrayList<>());
+        userDetails1.setUserName("demoUser");
+        userDetails1.setUser_Id(123);
+
+        Document document1 = new Document();
+        document1.setDeleted(true);
+        document1.setDocumentData("get");
+        document1.setDocumentLogs(new ArrayList<>());
+        document1.setDocumentName("get");
+        document1.setDocumentType("get");
+        document1.setDocument_Id(123);
+        document1.setUserDetails(userDetails1);
+
+        ArrayList<Document> documentList = new ArrayList<>();
+        documentList.add(document1);
+        documentList.add(document);
+
+        UserDetails userDetails2 = new UserDetails();
+        userDetails2.setDocuments(documentList);
+        userDetails2.setUserName("demoUser");
+        userDetails2.setUser_Id(123);
+        when(userRepositoryInterface.findDocumentUserId((Integer) any())).thenReturn(userDetails2);
+        BaseResponse<UserDetails> actualUserByDocumentId = userServiceImplement.getUserByDocumentId(123);
+        assertEquals("200", actualUserByDocumentId.getReasonCode());
+        assertEquals("success", actualUserByDocumentId.getStatus());
+        UserDetails responseObject = actualUserByDocumentId.getResponseObject();
+        assertSame(userDetails2, responseObject);
+        assertEquals("get", actualUserByDocumentId.getReasonText());
+        assertEquals(documentLogList, responseObject.getDocuments());
+        verify(userRepositoryInterface).findDocumentUserId((Integer) any());
+    }
+
+
+    @Test
+    void testGetUserByDocumentId4() {
+        UserDetails userDetails = new UserDetails();
+        userDetails.setDocuments(new ArrayList<>());
+        userDetails.setUserName("demoUser");
+        userDetails.setUser_Id(123);
+        Document document = mock(Document.class);
+        when(document.getDeleted()).thenReturn(false);
+        when(document.getDocument_Id()).thenReturn(123);
+        doNothing().when(document).setDeleted((Boolean) any());
+        doNothing().when(document).setDocumentData((String) any());
+        doNothing().when(document).setDocumentLogs((List<DocumentLog>) any());
+        doNothing().when(document).setDocumentName((String) any());
+        doNothing().when(document).setDocumentType((String) any());
+        doNothing().when(document).setDocument_Id((Integer) any());
+        doNothing().when(document).setUserDetails((UserDetails) any());
+        document.setDeleted(true);
+        document.setDocumentData("get");
+        document.setDocumentLogs(new ArrayList<>());
+        document.setDocumentName("get");
+        document.setDocumentType("get");
+        document.setDocument_Id(123);
+        document.setUserDetails(userDetails);
+
+        ArrayList<Document> documentList = new ArrayList<>();
+        documentList.add(document);
+
+        UserDetails userDetails1 = new UserDetails();
+        userDetails1.setDocuments(documentList);
+        userDetails1.setUserName("demoUser");
+        userDetails1.setUser_Id(123);
+        when(userRepositoryInterface.findDocumentUserId((Integer) any())).thenReturn(userDetails1);
+        BaseResponse<UserDetails> actualUserByDocumentId = userServiceImplement.getUserByDocumentId(123);
+        assertEquals("200", actualUserByDocumentId.getReasonCode());
+        assertEquals("success", actualUserByDocumentId.getStatus());
+        UserDetails responseObject = actualUserByDocumentId.getResponseObject();
+        assertSame(userDetails1, responseObject);
+        assertEquals("get", actualUserByDocumentId.getReasonText());
+        assertEquals(documentList, responseObject.getDocuments());
+        verify(userRepositoryInterface).findDocumentUserId((Integer) any());
+        verify(document).getDeleted();
+        verify(document).getDocument_Id();
+        verify(document).setDeleted((Boolean) any());
+        verify(document).setDocumentData((String) any());
+        verify(document).setDocumentLogs((List<DocumentLog>) any());
+        verify(document).setDocumentName((String) any());
+        verify(document).setDocumentType((String) any());
+        verify(document).setDocument_Id((Integer) any());
+        verify(document).setUserDetails((UserDetails) any());
+    }
+
+
+    @Test
+    void testGetUserByDocumentId5() {
+        UserDetails userDetails = new UserDetails();
+        userDetails.setDocuments(new ArrayList<>());
+        userDetails.setUserName("demoUser");
+        userDetails.setUser_Id(123);
+        Document document = mock(Document.class);
+        when(document.getDeleted()).thenReturn(true);
+        when(document.getDocument_Id()).thenReturn(1);
+        doNothing().when(document).setDeleted((Boolean) any());
+        doNothing().when(document).setDocumentData((String) any());
+        doNothing().when(document).setDocumentLogs((List<DocumentLog>) any());
+        doNothing().when(document).setDocumentName((String) any());
+        doNothing().when(document).setDocumentType((String) any());
+        doNothing().when(document).setDocument_Id((Integer) any());
+        doNothing().when(document).setUserDetails((UserDetails) any());
+        document.setDeleted(true);
+        document.setDocumentData("get");
+        ArrayList<DocumentLog> documentLogList = new ArrayList<>();
+        document.setDocumentLogs(documentLogList);
+        document.setDocumentName("get");
+        document.setDocumentType("get");
+        document.setDocument_Id(123);
+        document.setUserDetails(userDetails);
+
+        ArrayList<Document> documentList = new ArrayList<>();
+        documentList.add(document);
+
+        UserDetails userDetails1 = new UserDetails();
+        userDetails1.setDocuments(documentList);
+        userDetails1.setUserName("demoUser");
+        userDetails1.setUser_Id(123);
+        when(userRepositoryInterface.findDocumentUserId((Integer) any())).thenReturn(userDetails1);
+        BaseResponse<UserDetails> actualUserByDocumentId = userServiceImplement.getUserByDocumentId(123);
+        assertEquals("200", actualUserByDocumentId.getReasonCode());
+        assertEquals("success", actualUserByDocumentId.getStatus());
+        UserDetails responseObject = actualUserByDocumentId.getResponseObject();
+        assertSame(userDetails1, responseObject);
+        assertEquals("get", actualUserByDocumentId.getReasonText());
+        assertEquals(documentLogList, responseObject.getDocuments());
+        verify(userRepositoryInterface).findDocumentUserId((Integer) any());
+        verify(document).getDocument_Id();
+        verify(document).setDeleted((Boolean) any());
+        verify(document).setDocumentData((String) any());
+        verify(document).setDocumentLogs((List<DocumentLog>) any());
+        verify(document).setDocumentName((String) any());
+        verify(document).setDocumentType((String) any());
+        verify(document).setDocument_Id((Integer) any());
+        verify(document).setUserDetails((UserDetails) any());
     }
 }
 

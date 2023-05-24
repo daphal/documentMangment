@@ -35,6 +35,43 @@ class DocumentControllerTest {
     private DocumentServiceInterface documentServiceInterface;
 
 
+
+    @Test
+    void testGetDocumentById2() throws Exception {
+        UserDetails userDetails = new UserDetails();
+        userDetails.setDocuments(new ArrayList<>());
+        userDetails.setUserName("abcUser");
+        userDetails.setUser_Id(123);
+
+        Document document = new Document();
+        document.setDeleted(true);
+        document.setDocumentData("Document Data");
+        document.setDocumentLogs(new ArrayList<>());
+        document.setDocumentName("Document Name");
+        document.setDocumentType("Document Type");
+        document.setDocument_Id(123);
+        document.setUserDetails(userDetails);
+
+        BaseResponse<Document> baseResponse = new BaseResponse<>();
+        baseResponse.setReasonCode("Just cause");
+        baseResponse.setReasonText("Just cause");
+        baseResponse.setResponseListObject(new ArrayList<>());
+        baseResponse.setResponseObject(document);
+        baseResponse.setStatus("Status");
+        when(documentServiceInterface.getDocument((Integer) any())).thenReturn(baseResponse);
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/v1/api/getDocument/{id}", 1);
+        ResultActions actualPerformResult = MockMvcBuilders.standaloneSetup(documentController)
+                .build()
+                .perform(requestBuilder);
+        actualPerformResult.andExpect(MockMvcResultMatchers.status().isAccepted())
+                .andExpect(MockMvcResultMatchers.content().contentType("application/json"))
+                .andExpect(MockMvcResultMatchers.content()
+                        .string(
+                                "{\"status\":\"Status\",\"reasonCode\":\"Just cause\",\"reasonText\":\"Just cause\",\"responseObject\":{\"document_Id"
+                                        + "\":123,\"documentName\":\"Document Name\",\"documentData\":\"Document Data\",\"documentType\":\"Document"
+                                        + " Type\",\"deleted\":true,\"documentLogs\":[]},\"responseListObject\":[]}"));
+    }
+
     @Test
     void testSaveDocument() throws Exception {
         UserDetails userDetails = new UserDetails();
@@ -88,6 +125,60 @@ class DocumentControllerTest {
 
 
     @Test
+    void testSaveDocument2() throws Exception {
+        UserDetails userDetails = new UserDetails();
+        userDetails.setDocuments(new ArrayList<>());
+        userDetails.setUserName("abcUser");
+        userDetails.setUser_Id(123);
+
+        Document document = new Document();
+        document.setDeleted(true);
+        document.setDocumentData("Document Data");
+        document.setDocumentLogs(new ArrayList<>());
+        document.setDocumentName("Document Name");
+        document.setDocumentType("Document Type");
+        document.setDocument_Id(123);
+        document.setUserDetails(userDetails);
+
+        BaseResponse<Document> baseResponse = new BaseResponse<>();
+        baseResponse.setReasonCode("Just cause");
+        baseResponse.setReasonText("Just cause");
+        baseResponse.setResponseListObject(new ArrayList<>());
+        baseResponse.setResponseObject(document);
+        baseResponse.setStatus("Status");
+        when(documentServiceInterface.saveDocument((Document) any())).thenReturn(baseResponse);
+
+        UserDetails userDetails1 = new UserDetails();
+        userDetails1.setDocuments(new ArrayList<>());
+        userDetails1.setUserName("abcUser");
+        userDetails1.setUser_Id(123);
+
+        Document document1 = new Document();
+        document1.setDeleted(true);
+        document1.setDocumentData("Document Data");
+        document1.setDocumentLogs(new ArrayList<>());
+        document1.setDocumentName("Document Name");
+        document1.setDocumentType("Document Type");
+        document1.setDocument_Id(123);
+        document1.setUserDetails(userDetails1);
+        String content = (new ObjectMapper()).writeValueAsString(document1);
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.post("/v1/api/saveDocument")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(content);
+        ResultActions actualPerformResult = MockMvcBuilders.standaloneSetup(documentController)
+                .build()
+                .perform(requestBuilder);
+        actualPerformResult.andExpect(MockMvcResultMatchers.status().isAccepted())
+                .andExpect(MockMvcResultMatchers.content().contentType("application/json"))
+                .andExpect(MockMvcResultMatchers.content()
+                        .string(
+                                "{\"status\":\"Status\",\"reasonCode\":\"Just cause\",\"reasonText\":\"Just cause\",\"responseObject\":{\"document_Id"
+                                        + "\":123,\"documentName\":\"Document Name\",\"documentData\":\"Document Data\",\"documentType\":\"Document"
+                                        + " Type\",\"deleted\":true,\"documentLogs\":[]},\"responseListObject\":[]}"));
+    }
+
+
+    @Test
     void testDeleteDocument() throws Exception {
         UserDetails userDetails = new UserDetails();
         userDetails.setDocuments(new ArrayList<>());
@@ -121,6 +212,43 @@ class DocumentControllerTest {
                                 "{\"status\":\"Status\",\"reasonCode\":\"Just cause\",\"reasonText\":\"Just cause\",\"responseObject\":{\"document_Id"
                                         + "\":123,\"documentName\":\"Document Name\",\"documentData\":\"Document Data\",\"documentType\":" +
                                         "\"pdf\",\"deleted\":true,\"documentLogs\":[]},\"responseListObject\":[]}"));
+    }
+
+
+    @Test
+    void testDeleteDocument2() throws Exception {
+        UserDetails userDetails = new UserDetails();
+        userDetails.setDocuments(new ArrayList<>());
+        userDetails.setUserName("abcUser");
+        userDetails.setUser_Id(123);
+
+        Document document = new Document();
+        document.setDeleted(true);
+        document.setDocumentData("Document Data");
+        document.setDocumentLogs(new ArrayList<>());
+        document.setDocumentName("Document Name");
+        document.setDocumentType("Document Type");
+        document.setDocument_Id(123);
+        document.setUserDetails(userDetails);
+
+        BaseResponse<Document> baseResponse = new BaseResponse<>();
+        baseResponse.setReasonCode("Just cause");
+        baseResponse.setReasonText("Just cause");
+        baseResponse.setResponseListObject(new ArrayList<>());
+        baseResponse.setResponseObject(document);
+        baseResponse.setStatus("Status");
+        when(documentServiceInterface.deleteDocument((Integer) any())).thenReturn(baseResponse);
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.delete("/v1/api/deleteDocument/{id}", 1);
+        ResultActions actualPerformResult = MockMvcBuilders.standaloneSetup(documentController)
+                .build()
+                .perform(requestBuilder);
+        actualPerformResult.andExpect(MockMvcResultMatchers.status().isAccepted())
+                .andExpect(MockMvcResultMatchers.content().contentType("application/json"))
+                .andExpect(MockMvcResultMatchers.content()
+                        .string(
+                                "{\"status\":\"Status\",\"reasonCode\":\"Just cause\",\"reasonText\":\"Just cause\",\"responseObject\":{\"document_Id"
+                                        + "\":123,\"documentName\":\"Document Name\",\"documentData\":\"Document Data\",\"documentType\":\"Document"
+                                        + " Type\",\"deleted\":true,\"documentLogs\":[]},\"responseListObject\":[]}"));
     }
 
     @Test
@@ -210,6 +338,60 @@ class DocumentControllerTest {
                                 "{\"status\":\"Status\",\"reasonCode\":\"Just cause\",\"reasonText\":\"Just cause\",\"responseObject\":{\"document_Id"
                                         + "\":123,\"documentName\":\"Document Name\",\"documentData\":\"Document Data\",\"documentType\":\"" +
                                         "pdf\",\"deleted\":true,\"documentLogs\":[]},\"responseListObject\":[]}"));
+    }
+
+
+    @Test
+    void testUpdateDocument2() throws Exception {
+        UserDetails userDetails = new UserDetails();
+        userDetails.setDocuments(new ArrayList<>());
+        userDetails.setUserName("abcUser");
+        userDetails.setUser_Id(123);
+
+        Document document = new Document();
+        document.setDeleted(true);
+        document.setDocumentData("Document Data");
+        document.setDocumentLogs(new ArrayList<>());
+        document.setDocumentName("Document Name");
+        document.setDocumentType("Document Type");
+        document.setDocument_Id(123);
+        document.setUserDetails(userDetails);
+
+        BaseResponse<Document> baseResponse = new BaseResponse<>();
+        baseResponse.setReasonCode("Just cause");
+        baseResponse.setReasonText("Just cause");
+        baseResponse.setResponseListObject(new ArrayList<>());
+        baseResponse.setResponseObject(document);
+        baseResponse.setStatus("Status");
+        when(documentServiceInterface.upadteDocument((Document) any())).thenReturn(baseResponse);
+
+        UserDetails userDetails1 = new UserDetails();
+        userDetails1.setDocuments(new ArrayList<>());
+        userDetails1.setUserName("abcUser");
+        userDetails1.setUser_Id(123);
+
+        Document document1 = new Document();
+        document1.setDeleted(true);
+        document1.setDocumentData("Document Data");
+        document1.setDocumentLogs(new ArrayList<>());
+        document1.setDocumentName("Document Name");
+        document1.setDocumentType("Document Type");
+        document1.setDocument_Id(123);
+        document1.setUserDetails(userDetails1);
+        String content = (new ObjectMapper()).writeValueAsString(document1);
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.patch("/v1/api/updateDocument")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(content);
+        ResultActions actualPerformResult = MockMvcBuilders.standaloneSetup(documentController)
+                .build()
+                .perform(requestBuilder);
+        actualPerformResult.andExpect(MockMvcResultMatchers.status().isAccepted())
+                .andExpect(MockMvcResultMatchers.content().contentType("application/json"))
+                .andExpect(MockMvcResultMatchers.content()
+                        .string(
+                                "{\"status\":\"Status\",\"reasonCode\":\"Just cause\",\"reasonText\":\"Just cause\",\"responseObject\":{\"document_Id"
+                                        + "\":123,\"documentName\":\"Document Name\",\"documentData\":\"Document Data\",\"documentType\":\"Document"
+                                        + " Type\",\"deleted\":true,\"documentLogs\":[]},\"responseListObject\":[]}"));
     }
 }
 

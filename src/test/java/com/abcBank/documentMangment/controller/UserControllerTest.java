@@ -38,7 +38,7 @@ class UserControllerTest {
     void testGetUserById() throws Exception {
         UserDetails userDetails = new UserDetails();
         userDetails.setDocuments(new ArrayList<>());
-        userDetails.setUserName("janedoe");
+        userDetails.setUserName("demoUser");
         userDetails.setUser_Id(123);
 
         BaseResponse<UserDetails> baseResponse = new BaseResponse<>();
@@ -55,7 +55,7 @@ class UserControllerTest {
                 .andExpect(MockMvcResultMatchers.content()
                         .string(
                                 "{\"status\":\"Status\",\"reasonCode\":\"Just cause\",\"reasonText\":\"Just cause\",\"responseObject\":{\"user_Id\":123"
-                                        + ",\"userName\":\"janedoe\",\"documents\":[]},\"responseListObject\":[]}"));
+                                        + ",\"userName\":\"demoUser\",\"documents\":[]},\"responseListObject\":[]}"));
     }
 
 
@@ -63,7 +63,7 @@ class UserControllerTest {
     void testSaveUser() throws Exception {
         UserDetails userDetails = new UserDetails();
         userDetails.setDocuments(new ArrayList<>());
-        userDetails.setUserName("janedoe");
+        userDetails.setUserName("demoUser");
         userDetails.setUser_Id(123);
 
         BaseResponse<UserDetails> baseResponse = new BaseResponse<>();
@@ -76,7 +76,7 @@ class UserControllerTest {
 
         UserDetails userDetails1 = new UserDetails();
         userDetails1.setDocuments(new ArrayList<>());
-        userDetails1.setUserName("janedoe");
+        userDetails1.setUserName("demoUser");
         userDetails1.setUser_Id(123);
         String content = (new ObjectMapper()).writeValueAsString(userDetails1);
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.post("/v2/api/saveUser")
@@ -90,7 +90,7 @@ class UserControllerTest {
                 .andExpect(MockMvcResultMatchers.content()
                         .string(
                                 "{\"status\":\"Status\",\"reasonCode\":null,\"reasonText\":\"Just cause\",\"responseObject\":{\"user_Id\":123,\"userName"
-                                        + "\":\"janedoe\",\"documents\":[]},\"responseListObject\":null}"));
+                                        + "\":\"demoUser\",\"documents\":[]},\"responseListObject\":null}"));
     }
 
 
@@ -98,7 +98,7 @@ class UserControllerTest {
     void testSaveUser2() throws Exception {
         UserDetails userDetails = new UserDetails();
         userDetails.setDocuments(new ArrayList<>());
-        userDetails.setUserName("janedoe");
+        userDetails.setUserName("demoUser");
         userDetails.setUser_Id(123);
 
         BaseResponse<UserDetails> baseResponse = new BaseResponse<>();
@@ -111,7 +111,7 @@ class UserControllerTest {
 
         UserDetails userDetails1 = new UserDetails();
         userDetails1.setDocuments(new ArrayList<>());
-        userDetails1.setUserName("janedoe");
+        userDetails1.setUserName("demoUser");
         userDetails1.setUser_Id(123);
         String content = (new ObjectMapper()).writeValueAsString(userDetails1);
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.post("/v2/api/saveUser")
@@ -125,7 +125,68 @@ class UserControllerTest {
                 .andExpect(MockMvcResultMatchers.content()
                         .string(
                                 "{\"status\":\"Ok\",\"reasonCode\":null,\"reasonText\":\"Just cause\",\"responseObject\":{\"user_Id\":123,\"userName"
-                                        + "\":\"janedoe\",\"documents\":[]},\"responseListObject\":null}"));
+                                        + "\":\"demoUser\",\"documents\":[]},\"responseListObject\":null}"));
+    }
+
+
+    @Test
+    void testSaveUser3() throws Exception {
+        UserDetails userDetails = new UserDetails();
+        userDetails.setDocuments(new ArrayList<>());
+        userDetails.setUserName("demoUser");
+        userDetails.setUser_Id(123);
+
+        BaseResponse<UserDetails> baseResponse = new BaseResponse<>();
+        baseResponse.setReasonCode("success");
+        baseResponse.setReasonText("Just cause");
+        baseResponse.setResponseListObject(new ArrayList<>());
+        baseResponse.setResponseObject(userDetails);
+        baseResponse.setStatus("Status");
+        when(userServiceInterface.saveUser((UserDetails) any())).thenReturn(baseResponse);
+
+        UserDetails userDetails1 = new UserDetails();
+        userDetails1.setDocuments(new ArrayList<>());
+        userDetails1.setUserName("demoUser");
+        userDetails1.setUser_Id(123);
+        String content = (new ObjectMapper()).writeValueAsString(userDetails1);
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.post("/v2/api/saveUser")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(content);
+        ResultActions actualPerformResult = MockMvcBuilders.standaloneSetup(userController)
+                .build()
+                .perform(requestBuilder);
+        actualPerformResult.andExpect(MockMvcResultMatchers.status().isAccepted())
+                .andExpect(MockMvcResultMatchers.content().contentType("application/json"))
+                .andExpect(MockMvcResultMatchers.content()
+                        .string(
+                                "{\"status\":\"Ok\",\"reasonCode\":\"success\",\"reasonText\":\"Just cause\",\"responseObject\":{\"user_Id\":123,"
+                                        + "\"userName\":\"demoUser\",\"documents\":[]},\"responseListObject\":null}"));
+    }
+
+    @Test
+    void testGetUserByDocumentId() throws Exception {
+        UserDetails userDetails = new UserDetails();
+        userDetails.setDocuments(new ArrayList<>());
+        userDetails.setUserName("demoUser");
+        userDetails.setUser_Id(123);
+
+        BaseResponse<UserDetails> baseResponse = new BaseResponse<>();
+        baseResponse.setReasonCode("Just cause");
+        baseResponse.setReasonText("Just cause");
+        baseResponse.setResponseListObject(new ArrayList<>());
+        baseResponse.setResponseObject(userDetails);
+        baseResponse.setStatus("Status");
+        when(userServiceInterface.getUserByDocumentId((Integer) any())).thenReturn(baseResponse);
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/v2/api/getUserByDocumentId/{id}", 1);
+        ResultActions actualPerformResult = MockMvcBuilders.standaloneSetup(userController)
+                .build()
+                .perform(requestBuilder);
+        actualPerformResult.andExpect(MockMvcResultMatchers.status().isAccepted())
+                .andExpect(MockMvcResultMatchers.content().contentType("application/json"))
+                .andExpect(MockMvcResultMatchers.content()
+                        .string(
+                                "{\"status\":\"Status\",\"reasonCode\":\"Just cause\",\"reasonText\":\"Just cause\",\"responseObject\":{\"user_Id\":123"
+                                        + ",\"userName\":\"demoUser\",\"documents\":[]},\"responseListObject\":[]}"));
     }
 }
 
