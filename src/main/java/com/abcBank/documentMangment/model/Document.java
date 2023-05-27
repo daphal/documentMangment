@@ -20,7 +20,6 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonIgnoreProperties
-@Where(clause = "deleted = false")
 public class Document implements Serializable {
 
     @Id
@@ -42,7 +41,7 @@ public class Document implements Serializable {
 
     @JsonBackReference
     @ManyToOne()
-    @JoinColumn(name = "user_Id", nullable = false)
+    @JoinColumn(name = "user_Id")
     private UserDetails userDetails;
 
 

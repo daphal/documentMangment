@@ -62,7 +62,7 @@ public class UserServiceImplement implements UserServiceInterface {
         UserDetails processUserDetails = userDetails.get();
         List<Document> documents = processUserDetails.getDocuments();
         List<Document> documentsList =
-                documents.stream()
+                documents.stream().distinct()
                         .filter(n -> {
                             n = getDecodeDocument(n);
                             return n.getDeleted() == false;
