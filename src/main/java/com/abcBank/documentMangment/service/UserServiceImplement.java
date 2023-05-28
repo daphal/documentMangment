@@ -60,14 +60,16 @@ public class UserServiceImplement implements UserServiceInterface {
         Optional<UserDetails> userDetails;
         userDetails = userRepositoryInterface.findById(id);
         UserDetails processUserDetails = userDetails.get();
+        List<Document> documentsList = null;
         List<Document> documents = processUserDetails.getDocuments();
-        List<Document> documentsList =
-                documents.stream().distinct()
-                        .filter(n -> {
-                            n = getDecodeDocument(n);
-                            return n.getDeleted() == false;
-                        })
-                        .collect(toList());
+        if (!documents.isEmpty()) {
+            documentsList = documents.stream().distinct()
+                    .filter(n -> {
+                        n = getDecodeDocument(n);
+                        return n.getDeleted() == false;
+                    })
+                    .collect(toList());
+        }
         processUserDetails.setDocuments(documentsList);
         if (userDetails != null) {
             response.setReasonText("get");
