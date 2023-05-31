@@ -10,8 +10,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Base64;
+import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
+
+import static java.util.stream.Collectors.toList;
 
 @Service
 public class DocumentServiceImplement implements DocumentServiceInterface {
@@ -19,10 +22,8 @@ public class DocumentServiceImplement implements DocumentServiceInterface {
     DocumentRepositoryInterface documentRepositoryInterface;
     @Autowired
     UserRepositoryInterface userRepositoryInterface;
-
     @Autowired
     DocumentLogRepositoryInterface documentLogRepositoryInterface;
-
     @Override
     public BaseResponse<Document> saveDocument(Document document) throws Exception {
         BaseResponse<Document> response = new BaseResponse<>();
@@ -43,7 +44,6 @@ public class DocumentServiceImplement implements DocumentServiceInterface {
                         response.setReasonText("Document is updated but log is not update");
                         response.setStatus(CommonResponseData.FAIL);
                         response.setReasonCode(CommonResponseData.FAIL);
-
                     }
                 } else {
                     response.setReasonText("Document is not save");
@@ -54,30 +54,23 @@ public class DocumentServiceImplement implements DocumentServiceInterface {
             } else {
                 throw new FileTypeException("File type should me pdf");
             }
-
-
         } catch (FileTypeException exception) {
             response.setStatus(CommonResponseData.FAIL);
             response.setReasonText(exception.getMessage());
             response.setReasonCode(CommonResponseData.FAIL);
             response.setResponseObject(null);
             return response;
-
         } catch (Exception exception) {
             response.setStatus(CommonResponseData.FAIL);
             response.setReasonCode(CommonResponseData.FAIL);
             response.setReasonText(exception.getMessage());
             response.setResponseObject(null);
             return response;
-
         }
-
     }
-
     private String GetEncodeBase64(byte[] bytes) {
         return Base64.getUrlEncoder().encodeToString(bytes);
     }
-
     @Override
     public BaseResponse<Document> upadteDocument(Document document) throws Exception {
         BaseResponse<Document> response = new BaseResponse<>();
@@ -111,39 +104,30 @@ public class DocumentServiceImplement implements DocumentServiceInterface {
             } else {
                 throw new FileTypeException("File type should me pdf");
             }
-
-
         } catch (FileTypeException exception) {
             response.setStatus(CommonResponseData.FAIL);
             response.setReasonText(exception.getMessage());
             response.setReasonCode(CommonResponseData.FAIL);
             response.setResponseObject(null);
             return response;
-
         } catch (FileOwnarException exception) {
             response.setStatus(CommonResponseData.FAIL);
             response.setReasonText(exception.getMessage());
             response.setReasonCode(CommonResponseData.FAIL);
             response.setResponseObject(null);
             return response;
-
         } catch (Exception exception) {
             response.setStatus(CommonResponseData.FAIL);
             response.setReasonText(exception.getMessage());
             response.setResponseObject(null);
             return response;
-
         }
-
     }
-
     @Override
     public BaseResponse<Document> getDocument(Integer id) throws Exception {
-
         BaseResponse<Document> response = new BaseResponse<>();
-        Optional<Document> document = documentRepositoryInterface.findById(id);
-
-        if (document.isPresent() && document.get().getDeleted() == false) {
+        Document document = documentRepositoryInterface.findById(id).get();
+        if (document!=null && document.getDeleted() == false) {
             Document decodeDocument = getDecodeDocument(document);
             UserDetails userDetails=decodeDocument.getUserDetails();
             decodeDocument.setUserDetails(userDetails);
@@ -159,20 +143,36 @@ public class DocumentServiceImplement implements DocumentServiceInterface {
         }
         return response;
     }
-
-    private Document getDecodeDocument(Optional<Document> document) {
-        Document decodeDocument = document.get();
+    private Document getDecodeDocument(Document document) {
+        Document decodeDocument = document;
         byte[] actualByte = Base64.getDecoder()
                 .decode(decodeDocument.getDocumentData());
         decodeDocument.setDocumentData(new String(actualByte));
         return decodeDocument;
     }
-
     @Override
     public BaseResponse<Document> getAllDocument() throws Exception {
-        return null;
+        BaseResponse<Document> response = new BaseResponse<>();
+        List<Document> document = documentRepositoryInterface.findAll();
+        if (!document.isEmpty()) {
+            document = document.stream().distinct()
+                    .filter(n -> {
+                        n = getDecodeDocument(n);
+                        return n.getDeleted() == false;
+                    })
+                    .collect(toList());
+            response.setResponseListObject(document);
+            response.setStatus(CommonResponseData.SUCCESS);
+            response.setReasonText("Get");
+            response.setReasonCode(CommonResponseData.SUCCESS);
+        } else {
+            response.setReasonText("Internal error occur");
+            response.setStatus(CommonResponseData.FAIL);
+            response.setReasonText("Fail");
+            response.setReasonCode(CommonResponseData.SUCCESS);
+        }
+        return response;
     }
-
     @Override
     public BaseResponse<Document> deleteDocument(Integer id) throws Exception {
         BaseResponse<Document> response = new BaseResponse<>();
@@ -208,9 +208,7 @@ public class DocumentServiceImplement implements DocumentServiceInterface {
             response.setResponseObject(null);
             return response;
         }
-
     }
-
     @Override
     public BaseResponse<UserDetails> getDocumentByUser(Integer id) throws Exception {
         BaseResponse<UserDetails> response = new BaseResponse<>();

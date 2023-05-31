@@ -18,7 +18,6 @@ public class UserServiceImplement implements UserServiceInterface {
     UserRepositoryInterface userRepositoryInterface;
     @Autowired
     DocumentRepositoryInterface documentRepositoryInterface;
-
     @Override
     public BaseResponse<UserDetails> saveUser(UserDetails userDetails) throws Exception {
         BaseResponse<UserDetails> response = new BaseResponse<>();
@@ -35,7 +34,6 @@ public class UserServiceImplement implements UserServiceInterface {
         }
         return response;
     }
-
     @Override
     public BaseResponse<UserDetails> upadteUser(UserDetails userDetails) throws Exception {
         BaseResponse<UserDetails> response = new BaseResponse<>();
@@ -52,8 +50,6 @@ public class UserServiceImplement implements UserServiceInterface {
         }
         return response;
     }
-
-
     @Override
     public BaseResponse<UserDetails> getUser(Integer id) throws Exception {
         BaseResponse<UserDetails> response = new BaseResponse<>();
@@ -83,7 +79,6 @@ public class UserServiceImplement implements UserServiceInterface {
         }
         return response;
     }
-
     @Override
     public BaseResponse<UserDetails> getAllUser() throws Exception {
         BaseResponse<UserDetails> response = new BaseResponse<>();
@@ -102,7 +97,6 @@ public class UserServiceImplement implements UserServiceInterface {
         }
         return response;
     }
-
     @Override
     public BaseResponse<UserDetails> deleteUser(Integer id) throws Exception {
         BaseResponse<UserDetails> response = new BaseResponse<>();
@@ -112,10 +106,8 @@ public class UserServiceImplement implements UserServiceInterface {
         response.setReasonCode("200");
         return response;
     }
-
     @Override
     public BaseResponse<UserDetails> getUserByDocumentId(Integer documentId) {
-
         BaseResponse<UserDetails> response = new BaseResponse<>();
         UserDetails userDetails = null;
         Document document = null;
@@ -144,16 +136,12 @@ public class UserServiceImplement implements UserServiceInterface {
                 response.setStatus(CommonResponseData.FAIL);
             }
         } catch (Exception e) {
-
             response.setReasonText(e.getMessage());
             response.setReasonCode("500");
             response.setStatus(CommonResponseData.FAIL);
         }
-
         return response;
     }
-
-
     private Document getDecodeDocument(Document document) {
         Document decodeDocument = document;
         byte[] actualByte = Base64.getDecoder()
@@ -161,5 +149,4 @@ public class UserServiceImplement implements UserServiceInterface {
         decodeDocument.setDocumentData(new String(actualByte));
         return decodeDocument;
     }
-
 }
