@@ -2,10 +2,8 @@ package com.abcBank.documentMangment.controller;
 
 import com.abcBank.documentMangment.model.BaseResponse;
 import com.abcBank.documentMangment.model.CommonResponseData;
-import com.abcBank.documentMangment.model.Document;
 import com.abcBank.documentMangment.model.UserDetails;
 import com.abcBank.documentMangment.service.UserServiceInterface;
-import io.swagger.v3.oas.annotations.headers.Header;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,14 +16,11 @@ import javax.validation.Valid;
 @RequestMapping("/v2/api")
 @CrossOrigin("*")
 public class UserController {
-
     @Autowired
     private UserServiceInterface userServiceInterface;
-
     @PostMapping("/saveUser")
     public ResponseEntity<BaseResponse<?>> saveUser(@Valid @RequestBody UserDetails userDetails, HttpServletRequest request) throws Exception {
         BaseResponse<UserDetails> baseResponse = new BaseResponse<>();
-
         if (userDetails != null) {
             BaseResponse<UserDetails> userBaseResponse = userServiceInterface.saveUser(userDetails);
             if (userBaseResponse.getReasonCode().equalsIgnoreCase(CommonResponseData.SUCCESS)) {
@@ -49,21 +44,15 @@ public class UserController {
 
     @GetMapping("/getUserById/{id}")
     public ResponseEntity<BaseResponse<?>> getUserById(@PathVariable Integer id, HttpServletRequest request) throws Exception {
-
         BaseResponse<UserDetails> user = userServiceInterface.getUser(id);
         ResponseEntity responseEntity = new ResponseEntity<>(user, null, HttpStatus.ACCEPTED);
         return responseEntity;
-
     }
 
     @GetMapping("/getUserByDocumentId/{id}")
     public ResponseEntity<BaseResponse<?>> getUserByDocumentId(@PathVariable Integer id, HttpServletRequest request) throws Exception {
-
         BaseResponse<UserDetails> user = userServiceInterface.getUserByDocumentId(id);
         ResponseEntity responseEntity = new ResponseEntity<>(user, null, HttpStatus.ACCEPTED);
         return responseEntity;
-
     }
-
-
 }

@@ -24,6 +24,7 @@ public class DocumentServiceImplement implements DocumentServiceInterface {
     UserRepositoryInterface userRepositoryInterface;
     @Autowired
     DocumentLogRepositoryInterface documentLogRepositoryInterface;
+
     @Override
     public BaseResponse<Document> saveDocument(Document document) throws Exception {
         BaseResponse<Document> response = new BaseResponse<>();
@@ -68,9 +69,11 @@ public class DocumentServiceImplement implements DocumentServiceInterface {
             return response;
         }
     }
+
     private String GetEncodeBase64(byte[] bytes) {
         return Base64.getUrlEncoder().encodeToString(bytes);
     }
+
     @Override
     public BaseResponse<Document> upadteDocument(Document document) throws Exception {
         BaseResponse<Document> response = new BaseResponse<>();
@@ -123,13 +126,14 @@ public class DocumentServiceImplement implements DocumentServiceInterface {
             return response;
         }
     }
+
     @Override
     public BaseResponse<Document> getDocument(Integer id) throws Exception {
         BaseResponse<Document> response = new BaseResponse<>();
         Document document = documentRepositoryInterface.findById(id).get();
-        if (document!=null && document.getDeleted() == false) {
+        if (document != null && document.getDeleted() == false) {
             Document decodeDocument = getDecodeDocument(document);
-            UserDetails userDetails=decodeDocument.getUserDetails();
+            UserDetails userDetails = decodeDocument.getUserDetails();
             decodeDocument.setUserDetails(userDetails);
             response.setResponseObject(decodeDocument);
             response.setStatus(CommonResponseData.SUCCESS);
@@ -143,6 +147,7 @@ public class DocumentServiceImplement implements DocumentServiceInterface {
         }
         return response;
     }
+
     private Document getDecodeDocument(Document document) {
         Document decodeDocument = document;
         byte[] actualByte = Base64.getDecoder()
@@ -150,6 +155,7 @@ public class DocumentServiceImplement implements DocumentServiceInterface {
         decodeDocument.setDocumentData(new String(actualByte));
         return decodeDocument;
     }
+
     @Override
     public BaseResponse<Document> getAllDocument() throws Exception {
         BaseResponse<Document> response = new BaseResponse<>();
@@ -173,6 +179,7 @@ public class DocumentServiceImplement implements DocumentServiceInterface {
         }
         return response;
     }
+
     @Override
     public BaseResponse<Document> deleteDocument(Integer id) throws Exception {
         BaseResponse<Document> response = new BaseResponse<>();
@@ -209,6 +216,7 @@ public class DocumentServiceImplement implements DocumentServiceInterface {
             return response;
         }
     }
+
     @Override
     public BaseResponse<UserDetails> getDocumentByUser(Integer id) throws Exception {
         BaseResponse<UserDetails> response = new BaseResponse<>();
