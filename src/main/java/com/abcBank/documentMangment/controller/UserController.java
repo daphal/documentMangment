@@ -38,21 +38,33 @@ public class UserController {
         } else {
             baseResponse.setStatus(CommonResponseData.FAIL);
             baseResponse.setReasonText(CommonResponseData.INPUT_OBJECT_NULL);
-            return new ResponseEntity<BaseResponse<?>>(baseResponse, null, HttpStatus.ACCEPTED);
+            return new ResponseEntity<BaseResponse<?>>(baseResponse, null, HttpStatus.EXPECTATION_FAILED);
         }
     }
 
     @GetMapping("/getUserById/{id}")
     public ResponseEntity<BaseResponse<?>> getUserById(@PathVariable Integer id, HttpServletRequest request) throws Exception {
-        BaseResponse<UserDetails> user = userServiceInterface.getUser(id);
-        ResponseEntity responseEntity = new ResponseEntity<>(user, null, HttpStatus.ACCEPTED);
+        BaseResponse<UserDetails> baseResponse = userServiceInterface.getUser(id);
+        ResponseEntity responseEntity;
+        if(baseResponse.getStatus()== CommonResponseData.SUCCESS) {
+            responseEntity = new ResponseEntity<>(baseResponse, null, HttpStatus.ACCEPTED);
+        }
+        else{
+            responseEntity = new ResponseEntity<>(baseResponse, null, HttpStatus.EXPECTATION_FAILED);
+        }
         return responseEntity;
     }
 
     @GetMapping("/getUserByDocumentId/{id}")
     public ResponseEntity<BaseResponse<?>> getUserByDocumentId(@PathVariable Integer id, HttpServletRequest request) throws Exception {
-        BaseResponse<UserDetails> user = userServiceInterface.getUserByDocumentId(id);
-        ResponseEntity responseEntity = new ResponseEntity<>(user, null, HttpStatus.ACCEPTED);
+        BaseResponse<UserDetails> baseResponse = userServiceInterface.getUserByDocumentId(id);
+        ResponseEntity responseEntity;
+        if(baseResponse.getStatus()== CommonResponseData.SUCCESS) {
+            responseEntity = new ResponseEntity<>(baseResponse, null, HttpStatus.ACCEPTED);
+        }
+        else{
+            responseEntity = new ResponseEntity<>(baseResponse, null, HttpStatus.EXPECTATION_FAILED);
+        }
         return responseEntity;
     }
 }

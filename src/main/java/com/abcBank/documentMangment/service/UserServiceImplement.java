@@ -95,7 +95,7 @@ public class UserServiceImplement implements UserServiceInterface {
             response.setResponseListObject(userDetails);
             response.setReasonText("Get");
             response.setReasonCode("200");
-            response.setStatus("OK");
+            response.setStatus(CommonResponseData.SUCCESS);
             response.setReasonCode(CommonResponseData.SUCCESS);
         } else {
             response.setReasonText("error");
@@ -109,7 +109,7 @@ public class UserServiceImplement implements UserServiceInterface {
     public BaseResponse<UserDetails> deleteUser(Integer id) throws Exception {
         BaseResponse<UserDetails> response = new BaseResponse<>();
         userRepositoryInterface.deleteById(id);
-        response.setStatus("success");
+        response.setStatus(CommonResponseData.SUCCESS);
         response.setReasonText("deleted");
         response.setReasonCode("200");
         return response;

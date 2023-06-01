@@ -28,7 +28,6 @@ public class DocumentServiceImplement implements DocumentServiceInterface {
     @Override
     public BaseResponse<Document> saveDocument(Document document) throws Exception {
         BaseResponse<Document> response = new BaseResponse<>();
-        try {
             if (document.getDocumentType().toLowerCase(Locale.ROOT).equals("pdf")) {
                 document.setDocumentData(GetEncodeBase64(document.getDocumentData().getBytes()));
                 document = documentRepositoryInterface.save(document);
@@ -55,21 +54,7 @@ public class DocumentServiceImplement implements DocumentServiceInterface {
             } else {
                 throw new FileTypeException("File type should me pdf");
             }
-        } catch (FileTypeException exception) {
-            response.setStatus(CommonResponseData.FAIL);
-            response.setReasonText(exception.getMessage());
-            response.setReasonCode(CommonResponseData.FAIL);
-            response.setResponseObject(null);
-            return response;
-        } catch (Exception exception) {
-            response.setStatus(CommonResponseData.FAIL);
-            response.setReasonCode(CommonResponseData.FAIL);
-            response.setReasonText(exception.getMessage());
-            response.setResponseObject(null);
-            return response;
-        }
     }
-
     private String GetEncodeBase64(byte[] bytes) {
         return Base64.getUrlEncoder().encodeToString(bytes);
     }
@@ -77,7 +62,6 @@ public class DocumentServiceImplement implements DocumentServiceInterface {
     @Override
     public BaseResponse<Document> upadteDocument(Document document) throws Exception {
         BaseResponse<Document> response = new BaseResponse<>();
-        try {
             if (document.getDocumentType().toLowerCase(Locale.ROOT).equals("pdf")) {
                 if (document.getDocument_Id() > 0 &&
                         documentRepositoryInterface.getById(document.getDocument_Id()).getUserDetails().getUser_Id()
@@ -107,24 +91,6 @@ public class DocumentServiceImplement implements DocumentServiceInterface {
             } else {
                 throw new FileTypeException("File type should me pdf");
             }
-        } catch (FileTypeException exception) {
-            response.setStatus(CommonResponseData.FAIL);
-            response.setReasonText(exception.getMessage());
-            response.setReasonCode(CommonResponseData.FAIL);
-            response.setResponseObject(null);
-            return response;
-        } catch (FileOwnarException exception) {
-            response.setStatus(CommonResponseData.FAIL);
-            response.setReasonText(exception.getMessage());
-            response.setReasonCode(CommonResponseData.FAIL);
-            response.setResponseObject(null);
-            return response;
-        } catch (Exception exception) {
-            response.setStatus(CommonResponseData.FAIL);
-            response.setReasonText(exception.getMessage());
-            response.setResponseObject(null);
-            return response;
-        }
     }
 
     @Override
@@ -183,7 +149,6 @@ public class DocumentServiceImplement implements DocumentServiceInterface {
     @Override
     public BaseResponse<Document> deleteDocument(Integer id) throws Exception {
         BaseResponse<Document> response = new BaseResponse<>();
-        try {
             Document document = documentRepositoryInterface.getById(id);
             document.setDocumentLogs(null);
             if (document != null) {
@@ -208,13 +173,6 @@ public class DocumentServiceImplement implements DocumentServiceInterface {
                 response.setStatus(CommonResponseData.FAIL);
             }
             return response;
-        } catch (Exception ex) {
-            response.setStatus(CommonResponseData.FAIL);
-            response.setReasonText(ex.getMessage());
-            response.setReasonCode(CommonResponseData.FAIL);
-            response.setResponseObject(null);
-            return response;
-        }
     }
 
     @Override
