@@ -46,7 +46,7 @@ public class UserController {
     public ResponseEntity<BaseResponse<?>> getUserById(@PathVariable Integer id, HttpServletRequest request) throws Exception {
         BaseResponse<UserDetails> baseResponse = userServiceInterface.getUser(id);
         ResponseEntity responseEntity;
-        if(baseResponse.getStatus()== CommonResponseData.SUCCESS) {
+        if(baseResponse.getStatus().equals(CommonResponseData.SUCCESS)) {
             responseEntity = new ResponseEntity<>(baseResponse, null, HttpStatus.ACCEPTED);
         }
         else{
@@ -59,7 +59,7 @@ public class UserController {
     public ResponseEntity<BaseResponse<?>> getUserByDocumentId(@PathVariable Integer id, HttpServletRequest request) throws Exception {
         BaseResponse<UserDetails> baseResponse = userServiceInterface.getUserByDocumentId(id);
         ResponseEntity responseEntity;
-        if(baseResponse.getStatus()== CommonResponseData.SUCCESS) {
+        if(baseResponse.getStatus().equals(CommonResponseData.SUCCESS)) {
             responseEntity = new ResponseEntity<>(baseResponse, null, HttpStatus.ACCEPTED);
         }
         else{
